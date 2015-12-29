@@ -91,7 +91,6 @@ patterns: [
 		name: "invalid.illegal.top-level"
 	}
 ]
-uuid: "c96512e4-9455-4f67-91cd-82038a26ec1a"
 repository:
 	"double-slash":
 		match: "//.*$"
