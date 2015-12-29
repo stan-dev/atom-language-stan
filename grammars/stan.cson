@@ -1,8 +1,7 @@
 name: "Stan"
 scopeName: "source.stan"
 'fileTypes': [
-	"stan"
-	,
+	"stan",
 ]
 'patterns': [
 	{
