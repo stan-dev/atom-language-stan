@@ -1,0 +1,5 @@
+'.source.stan':
+  'editor':
+    'softTabs': true
+    'tabLength': 2
+    'commentStart': '// '

@@ -80,7 +80,7 @@ repository:
     ]
   "block-declaration":
     match: "\\b(data|transformed\\s+data|parameters|transformed\\s+parameters|model|generated\\s+quantities|functions)\\b"
-    name: "entity.name.type.stan'
+    name: "entity.name.type.stan"
   type:
     match: "\\b(int|real|vector|simplex|ordered|positive_ordered|row_vector|matrix|corr_matrix|cov_matrix|cholesky_factor_cov|cholesky_factor_corr|void)\\b"
     name: "storage.type.stan"
@@ -127,4 +127,3 @@ repository:
   integer:
     match: "-?(0|[1-9]\\d*)"
     name: "constant.numeric.integer.stan"
-

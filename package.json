@@ -1,17 +1,14 @@
 {
   "name": "language-stan",
-  "main": "./lib/language-stan",
   "version": "0.0.0",
   "description": "Stan Language support in Atom",
-  "keywords": [
-  ],
-  "activationCommands": {
-    "atom-workspace": "language-stan:toggle"
-  },
   "repository": "https://github.com/jrnold/atom-language-stan",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/jrnold/atom-language-stan/issues"
   },
   "dependencies": {
   }
