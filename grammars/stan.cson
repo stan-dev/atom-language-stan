@@ -1,9 +1,10 @@
 name: "Stan"
 scopeName: "source.stan"
-fileTypes: [
+'fileTypes': [
 	"stan"
+	,
 ]
-patterns: [
+'patterns': [
 	{
 		include: "#double-slash"
 	}
