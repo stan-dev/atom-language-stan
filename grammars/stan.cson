@@ -113,15 +113,15 @@ repository:
     match: "\\b[0-9_]+[a-zA-Z_]+[a-zA-Z0-9_]*\\b"
     name: "invalid.illegal.variable.nonalphafirst"
   "real-a":
-    match: "-?(0|[1-9]\\d*)?\\.\\d+([eE]-?(0|[1-9]\\d*))?"
+    match: "\\b-?(0|[1-9]\\d*)?\\.\\d+([eE]-?(0|[1-9]\\d*))?\\b"
     comment: "have a point with numbers after, maybe an exponent"
     name: "constant.numeric.real.stan"
   "real-b":
-    match: "-?(0|[1-9]\\d*)\\.\\d*([eE]-?(0|[1-9]\\d*))?"
+    match: "\\b-?(0|[1-9]\\d*)\\.\\d*([eE]-?(0|[1-9]\\d*))?\\b"
     comment: "have a point with numbers before, maybe an exponent"
     name: "constant.numeric.real.stan"
   "real-c":
-    match: "-?(0|[1-9]\\d*)[eE]-?(0|[1-9]\\d*)"
+    match: "\\b-?(0|[1-9]\\d*)[eE]-?(0|[1-9]\\d*)\\b"
     comment: "no point, have an exponent"
     name: "constant.numeric.real.stan"
   integer:
