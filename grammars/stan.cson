@@ -1,8 +1,6 @@
-name: "Stan"
-scopeName: "source.stan"
-'fileTypes': [
-	"stan",
-]
+'name' "Stan"
+'scopeName': "source.stan"
+'fileTypes': "stan"
 'patterns': [
 	{
 		include: "#double-slash"
