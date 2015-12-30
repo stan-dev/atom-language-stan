@@ -1,90 +1,90 @@
-.source.stan:
+'.source.stan':
   'For':
     'prefix': 'for'
-    'body': """
+    'body': '''
     for (${1:var} in ${2:start}:${3:end}) {
-      ${4}'
+      $0
     }
-    """
+    '''
   'If':
     'prefix': 'if'
-    'body': """
+    'body': '''
     if (${1:condition}) {
-      ${2}
+      $0
     }
-    """
+    '''
   'Else If':
     'prefix': 'ei'
-    'body': """
+    'body': '''
     else  if (${1:condition}) {
-      ${2}
+      $0
     }
-    """
+    '''
   'Lower':
-    'prefix': "<l"
-    'body': '<lower = ${1:expression}>$2'
+    'prefix': "<lower"
+    'body': '<lower = ${1:expression}>$0'
   'Upper':
-    'prefix': "<u"
-    'content': '<upper = ${1:expression}>$2'
-  'Lower/Upper'
-    'prefix': "<lu"
-    'content': '<lower = ${1:expression}, upper = ${2:expression}>'
+    'prefix': "<upper"
+    'content': '<upper = ${1:expression}>$0'
+  'Lower/Upper':
+    'prefix': '<lu'
+    'content': '<lower = ${1:expression}, upper = ${2:expression}>$0'
   'While':
     'prefix': 'while'
-    'content': """
+    'content': '''
     while (${1:condition}) {
-      $2
+      $0
     }
-    """
+    '''
   'Transformed Parameters':
     'prefix': 'tpar'
-    'body': """
+    'body': '''
     transformed parameters {
-      $1
+      $0
     }
-    """
+    '''
   'Data':
     'prefix': 'data'
-    'body': """
+    'body': '''
     data {
-      $1
+      $0
     }
-    """
+    '''
   'Transformed Data':
     'prefix': 'tdata'
-    'body': """
+    'body': '''
     transformed data {
-      $1
+      $0
     }
-    """
+    '''
   'Generated Quantities':
     'prefix': 'gen'
-    'body': """
+    'body': '''
     generated quantities {
-      $1
+      $0
     }
-    """
+    '''
   'Model':
     'prefix': 'mdl'
-    'body': """
+    'body': '''
     model {
-      $1
+      $0
     }
-    """
+    '''
   'ODE':
     'prefix': 'ode'
     'body': 'integrate_ode(${1:function}, ${2:y0}, ${3:t0}, ${4:t}, ${5:theta}, ${6:x_r}, ${7:x_i});'
   'Function block':
     'prefix': 'funs'
-    'body': """
+    'body': '''
     functions {
-      $1
+      $0
     }
-    """
+    '''
   'Function declaration':
     'prefix': 'fun'
-    'body': """
+    'body': '''
     ${1:return} ${2:name} (${3:args}) {
-      $4
+      $0
     }
-    """
+    '''
