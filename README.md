@@ -4,7 +4,7 @@
 
 [![APM Version](https://img.shields.io/apm/v/language-stan.svg)](https://atom.io/packages/language-stan)
 [![APM Downloads](https://img.shields.io/apm/dm/language-stan.svg)](https://atom.io/packages/language-stan)
-[![apm][2]][1]
+[![APM license](https://img.shields.io/apm/l/language-stan.svg)](https://atom.io/packages/language-stan)
 
 Adds syntax highlighting and snippets for [Stan](http://mc-stan.org/) files in [Atom](https://atom.io/).
 
