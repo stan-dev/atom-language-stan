@@ -3,3 +3,12 @@
     'softTabs': true
     'tabLength': 2
     'commentStart': '// '
+    'foldEndPattern': '^\\s*\\}'
+    'increaseIndentPattern': '(?x)
+        \\{ [^}"\']* $
+      | \\[ [^\\]"\']* $
+      | \\( [^)"\']* $
+      '
+    'decreaseIndentPattern': '(?x)
+        ^ \\s* (\\s* /[*] .* [*]/ \\s*)* [}\\])]
+      '

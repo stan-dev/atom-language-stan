@@ -73,7 +73,7 @@
     '''
   'ODE':
     'prefix': 'ode'
-    'body': 'integrate_ode(${1:function}, ${2:y0}, ${3:t0}, ${4:t}, ${5:theta}, ${6:x_r}, ${7:x_i});'
+    'body': 'integrate_ode(${1:function}, ${2:y0}, ${3:t0}, ${4:t}, ${5:theta}, ${6:x_r}, ${7:x_i});$0'
   'Function block':
     'prefix': 'funs'
     'body': '''
