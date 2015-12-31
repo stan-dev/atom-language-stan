@@ -1,12 +1,12 @@
-
-
-# Stan language support in Atom
-
 [![APM Version](https://img.shields.io/apm/v/language-stan.svg)](https://atom.io/packages/language-stan)
 [![APM Downloads](https://img.shields.io/apm/dm/language-stan.svg)](https://atom.io/packages/language-stan)
 [![APM license](https://img.shields.io/apm/l/language-stan.svg)](https://atom.io/packages/language-stan)
 
+# Stan language support in Atom
+
 Adds syntax highlighting and snippets for [Stan](http://mc-stan.org/) files in [Atom](https://atom.io/).
+
+![Example Stan file with syntax highlighting](example.png)
 
 Originally the grammar was converted from the [sublime-stan](https://github.com/dougalsutherland/sublime-stan) Stan package,
 though many changes have been made since then.

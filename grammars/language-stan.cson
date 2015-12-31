@@ -110,7 +110,7 @@ repository:
   lp:
     match: "\\blp__\\b"
     name: "invalid.deprecated.lp.stan"
-  constants: 
+  constants:
     match: "\\b(pi|e|sqrt2|log2|log10|not_a_number|positive_infinity|negative_infinity|epsilon|negative_epsilon)\\b"
     name: "support.constant.stan"
   functions:
