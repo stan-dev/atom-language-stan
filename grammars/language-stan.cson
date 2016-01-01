@@ -49,6 +49,9 @@
     'include': '#reserved-stan'
   }
   {
+    'include': '#operators'
+  }
+  {
     'include': '#real'
   }
   {
@@ -145,6 +148,24 @@
       )\\b
     '
     'name': 'constant.numeric.real.stan'
+  'operators':
+    'patterns': [
+      {
+        'matches': '\\|\\||&&|!'
+        'name' : 'keyword.operator.other.stan'
+        'comment': 'logical operators'
+      }
+      {
+        'matches': '==|!=|<=?|>=?'
+        'name' : 'keyword.operator.other.stan'
+        'comment': 'logical operators'
+      }
+      {
+        'matches': "+|-|*|/|%|\\\\|\\.[*/]|\\^|'"
+        'name': 'keyword.operator.other.stan'
+        'comment': 'arithmetic and matrix operators'
+      }
+    ]
   'integer':
     'match': '\\b-?\\d+'
     'name': 'constant.numeric.integer.stan'
