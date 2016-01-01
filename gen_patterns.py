@@ -9,7 +9,7 @@ import re
 import sys
 
 def kw2re(x):
-    return r'"\\b(%s)\\b"' % '|'.join(x)
+    return r'(%s)' % '|'.join(x)
 
 def patterns(filename):
     with open(filename, "r") as f:
@@ -20,23 +20,28 @@ def patterns(filename):
         for x in data['types'][k]:
             types.add(x)
     types = sorted(list(types))
-    print("types: " + kw2re(types))
-        
-    print("blocks", kw2re(re.sub('\s+', r'\\\\s+', x) for x in data['blocks']))
-    print("keywords-range-constraings: " + kw2re(data['keywords']['range_constraints']))
-    print("keywords-special-functions: " + kw2re(data['keywords']['functions']))
-    print("keywords-control-flow:" + kw2re(data['keywords']['control']))
-    print("keywords-others: " + kw2re(data['keywords']['other']))
-    print("cpp-reserved: " + kw2re(data['reserved']['cpp']))
-    print("stan-reserved " + kw2re(data['reserved']['stan']))
-    print("constants: " + kw2re(data['constants']))
-
-    excluded_fxn = data['keywords']['functions'] + data['operator_functions'] + data['constants']
-    functions = [x for x in data['functions'] 
-                 if x not in excluded_fxn]
-    print("functions: " + kw2re(functions))
-
-    print("distribution: " + kw2re(data['distributions']))
+    print("types: " + r'\\b' + kw2re(types) + r'\\b')
+    print("blocks: " + r'\\b' + kw2re(re.sub(r'\s+', r'\\\\s+', x) for x in data['blocks']) + r'\\b')
+    print("keywords-range-constraings: " + r'\\b' + kw2re(data['keywords']['range_constraints']) + r'\\b')
+    print("keywords-special-functions: " + r'\\b' + kw2re(data['keywords']['functions']) + r'\\b')
+    print("keywords-control-flow:" + r'\\b' + kw2re(data['keywords']['control']) + r'\\b')
+    print("keywords-others: " + r'\\b' + kw2re(data['keywords']['other']) + r'\\b')
+    print("cpp-reserved: " + r'\\b' + kw2re(data['reserved']['cpp']) + r'\\b')
+    print("stan-reserved: " + r'\\b' + kw2re(data['reserved']['stan']) + r'\\b')
+    print("functions: " + r'\\b' + kw2re(sorted(data['functions']['names']['all'])) + r'\\b')
+    print("distributions: " + r'\\b(~)\\s*' + kw2re(sorted(data['distributions'])) + r'\\b')
+    operators = []
+    for x in sorted(data['operators'], key = len, reverse = True):
+        if x == '\\':
+            x = r'\\\\'
+        elif x == '^':
+            x = r'\\^'
+        else:
+            x = ''.join('[%s]' % el for el in x)
+            
+        operators.append(x)
+    print("operators: " + r'\\b' + kw2re(operators) + r'\\b')
+    
 
 def main():
     src = 'stan-language-definitions/stan_lang.json'
