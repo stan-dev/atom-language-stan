@@ -6,7 +6,7 @@
 
 Adds syntax highlighting and snippets for [Stan](http://mc-stan.org/) files in [Atom](https://atom.io/).
 
-![Example Stan file with syntax highlighting](https://github.com/jrnold/atom-language-stan/blob/master/resources/screenshot.png?raw=true)
+![Example Stan file with syntax highlighting](https://github.com/jrnold/atom-language-stan/blob/master/screenshot.png?raw=true)
 
 Originally the grammar was converted from the [sublime-stan](https://github.com/dougalsutherland/sublime-stan) Stan package,
 though many changes have been made since then.
