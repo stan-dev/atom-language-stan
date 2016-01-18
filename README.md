@@ -1,6 +1,7 @@
 [![APM Version](https://img.shields.io/apm/v/language-stan.svg)](https://atom.io/packages/language-stan)
 [![APM Downloads](https://img.shields.io/apm/dm/language-stan.svg)](https://atom.io/packages/language-stan)
 [![APM license](https://img.shields.io/apm/l/language-stan.svg)](https://atom.io/packages/language-stan)
+[![Build Status](https://travis-ci.org/jrnold/atom-language-stan.svg?branch=master)](https://travis-ci.org/jrnold/atom-language-stan)
 
 # Stan language support in Atom
 
