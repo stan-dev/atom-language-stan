@@ -2,25 +2,11 @@
 'scopeName': 'source.stan'
 'fileTypes': [ 'stan' ]
 'patterns': [
-
   {
-    'comment': 'string literal'
-    'begin': '"'
-    'beginCaptures':
-      '0':
-        'name': 'punctuation.definition.string.begin.stan'
-    'end': '"'
-    'endCaptures':
-      '0':
-        'name': 'punctuation.definition.string.end.stan'
-    'name': 'string.quoted.double.stan'
-    'patterns': [
-      {
-        'comment': 'Stan strings can only contain ASCII printable characters'
-        'match': '(\\p{^ASCII}|\\p{Cntrl}|\\\\)+'
-        'name': 'invalid.illegal.string.stan'
-      }
-    ]
+    'include': '#comments'
+  }
+  {
+    'include': '#strings'
   }
   {
     'include': '#block-declaration'
@@ -129,6 +115,28 @@
         'name': 'comment.line.number-sign.stan'
       }
     ]
+    'strings':
+      'patterns': [
+          {
+            'comment': 'string literal'
+            'begin': '"'
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.definition.string.begin.stan'
+            'end': '"'
+            'endCaptures':
+              '0':
+                'name': 'punctuation.definition.string.end.stan'
+            'name': 'string.quoted.double.stan'
+            'patterns': [
+              {
+                'comment': 'Stan strings can only contain ASCII printable characters'
+                'match': '(\\p{^ASCII}|\\p{Cntrl}|\\\\)+'
+                'name': 'invalid.illegal.string.stan'
+              }
+            ]
+          }
+      ]
   'semicolon':
     'match': ';'
     'name': 'punctuation.separator.stan'
