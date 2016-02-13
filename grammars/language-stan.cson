@@ -51,13 +51,36 @@
     'include': '#integer'
   }
   {
-    'include': '#assignment'
-  }
-  {
-    'include': '#semicolon'
-  }
-  {
     'include': '#illegal-variable'
+  }
+  {
+    'match': ','
+    'name': 'meta.delimiter.comma.stan'
+  }
+  {
+    'match': '\\;'
+    'name': 'punctuation.terminator.statement.stan'
+  }
+  {
+    'begin': '{|}'
+    'name': 'meta.brace.curly.stan'
+  }
+  {
+    'begin': '\\('
+    'beginCaptures':
+      '0':
+        'name': 'meta.brace.round.stan'
+    'end': '\\)'
+    'endCaptures'
+      '0':
+        'name': 'meta.brace.round.stan'
+    'patterns': [
+      'include': '$self'
+    ]
+  }
+  {
+    'match': '\\[|\\]'
+    'name': 'meta.brace.square.stan'
   }
 ]
 'repository':
@@ -137,14 +160,6 @@
             ]
           }
       ]
-  'semicolon':
-    'match': ';'
-    'name': 'punctuation.separator.stan'
-
-  'assignment':
-    'match': '<-'
-    'name': 'keyword.operator.assignment.stan'
-
   'block-declaration':
     'match': '\\b(functions|data|transformed\\s+data|parameters|transformed\\s+parameters|model|generated\\s+quantities)\\b'
     'name': 'entity.name.type.stan'
@@ -199,6 +214,29 @@
       '2':
         'name': 'support.function.distribution.stan'
 
+  'operators':
+    'patterns': [
+      {
+        'match': '<-'
+        'name': 'keyword.operator.assignment.stan'
+      }
+      {
+        'matches': '\\|\\||&&|!'
+        'name': 'keyword.operator.logical.stan'
+        'comment': 'logical operators'
+      }
+      {
+        'matches': '==|!=|<=?|>=?'
+        'name': 'keyword.operator.comparison.stan'
+        'comment': 'logical operators'
+      }
+      {
+        'matches': "+|-|*|/|%|\\\\|\\.[*/]|\\^|'"
+        'name': 'keyword.operator.other.stan'
+        'comment': 'arithmetic and matrix operators'
+      }
+    ]
+
   'real':
     'match': '(?x)
       (
@@ -210,25 +248,6 @@
       )\\b
     '
     'name': 'constant.numeric.real.stan'
-
-  'operators':
-    'patterns': [
-      {
-        'matches': '\\|\\||&&|!'
-        'name': 'keyword.operator.other.stan'
-        'comment': 'logical operators'
-      }
-      {
-        'matches': '==|!=|<=?|>=?'
-        'name': 'keyword.operator.other.stan'
-        'comment': 'logical operators'
-      }
-      {
-        'matches': "+|-|*|/|%|\\\\|\\.[*/]|\\^|'"
-        'name': 'keyword.operator.other.stan'
-        'comment': 'arithmetic and matrix operators'
-      }
-    ]
 
   'integer':
     'match': '\\b-?\\d+'
