@@ -35,8 +35,8 @@
     'name': 'keyword.other.other.stan'
   }
   {
-    'comment': 'truncation operator T[]':
-    'match': '\\bT(?=\\s*\[)'
+    'comment': 'truncation operator T[]'
+    'match': '\\bT(?=\\s*\\[)'
     'name': 'keyword.other.truncation.stan'
   }
   {
@@ -52,66 +52,45 @@
     'match': '\\blp__\\b'
     'name': 'invalid.deprecated.lp.stan'
   }
+
   {
-    'include': '#operators'
+    'match': '\\b([a-zA-Z0-9_]*__|[0-9_][A-Za-z0-9_]+|_)\\b'
+    'name': 'invalid.illegal.variable'
+  }
+  {
+    'match': '\\b[A-Za-z][0-9A-Za-z_]*\\b'
+    'comment': 'generic variable names'
   }
   {
     'include': '#numbers'
+  }
+  {
+    'include': '#operators'
   }
   {
     'match': ','
     'name': 'meta.delimiter.comma.stan'
   }
   {
-    'match': '\\;'
-    'name': 'punctuation.terminator.statement.stan'
-  }
-  {
-    'begin': '{|}'
+    'match': '[{}]'
     'name': 'meta.brace.curly.stan'
-  }
-  {
-    'begin': '\\('
-    'beginCaptures':
-      '0':
-        'name': 'meta.brace.round.stan'
-    'end': '\\)'
-    'endCaptures'
-      '0':
-        'name': 'meta.brace.round.stan'
-    'patterns': [
-      'include': '$self'
-    ]
   }
   {
     'match': '\\[|\\]'
     'name': 'meta.brace.square.stan'
   }
+  {
+    'match': '\\(|\\)'
+    'name': 'meta.brace.round.stan'
+  }
+  {
+    'match': '\\;'
+    'name': 'punctuation.terminator.statement.stan'
+  }
 ]
 'repository':
-  'docblock':
-    'patterns': [
-      {
-        'match': '(?<!\\w)@(param|return)\\b'
-        'name': 'storage.type.class.stan'
-      }
-    ]
   'comments':
     'patterns': [
-        {
-          'begin': '/\\*\\*(?!/)'
-          'captures':
-            '0':
-              'name': 'punctuation.definition.comment.stan'
-          'patterns': [
-            {
-              'include': '#docblock'
-            }
-          ]
-          'end': '\\*/'
-          'name': 'comment.block.documentation.stan'
-        }
-      }
       {
         'comment': '/* comment block */'
         'begin': '/\\*'
@@ -172,37 +151,38 @@
         'name': 'keyword.operator.assignment.stan'
       }
       {
-        'matches': '\\|\\||&&|!'
+        'match': '\\|\\||&&'
         'name': 'keyword.operator.logical.stan'
-        'comment': 'logical operators'
       }
       {
-        'matches': '==|!=|<=?|>=?'
+        'match': '==|!=|<=?|>=?'
         'name': 'keyword.operator.comparison.stan'
-        'comment': 'logical operators'
       }
       {
-        'matches': "+|-|*|/|%|\\\\|\\.[*/]|\\^|'"
-        'name': 'keyword.operator.other.stan'
-        'comment': 'arithmetic and matrix operators'
+        'match': '!'
+        'name': 'keyword.operator.logical.stan'
+      }
+      {
+        'match': "\\+|-|\\.?\\*|\\.?/|%|\\\\|\\^|'"
+        'name': 'keyword.operator.arithmetic.stan'
       }
     ]
   'numbers':
     'patterns': [
       {
-        'match': '(?x)
+        'match': '''(?x)
         (
-        ([0-9]+)?\\.[0-9]+([eE][-]?[0-9]+)?
+        [0-9]+\\.[0-9]*([eE]-?[0-9]+)?
         |
-        [0-9]+\\.([eE][-]?[0-9]+)?
+        \\.[0-9]+([eE][-]?[0-9]+)?
         |
         [0-9]+[eE][-]?[0-9]+
-        )\\b
-        '
+        )
+        '''
         'name': 'constant.numeric.real.stan'
       }
       {
-        'match': '\\b-?\\d+'
+        'match': '[0-9]+'
         'name': 'constant.numeric.integer.stan'
       }
     ]
