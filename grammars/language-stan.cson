@@ -52,7 +52,11 @@
     'match': '\\blp__\\b'
     'name': 'invalid.deprecated.lp.stan'
   }
-
+  {
+    'include': '#numbers'
+    # Needs to go before variable names in order to avoid variables matching
+    # the e in real numbers like 12.e34
+  }
   {
     'match': '\\b([a-zA-Z0-9_]*__|[0-9_][A-Za-z0-9_]+|_)\\b'
     'name': 'invalid.illegal.variable'
@@ -62,13 +66,10 @@
     'comment': 'generic variable names'
   }
   {
-    'include': '#numbers'
-  }
-  {
     'include': '#operators'
   }
   {
-    'match': ','
+    'match': ', '
     'name': 'meta.delimiter.comma.stan'
   }
   {
@@ -149,6 +150,10 @@
       {
         'match': '<-'
         'name': 'keyword.operator.assignment.stan'
+      }
+      {
+        'match': ':'
+        'name': 'keyword.operator.colon.stan'
       }
       {
         'match': '\\|\\||&&'
