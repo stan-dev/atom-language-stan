@@ -69,7 +69,7 @@
     'include': '#operators'
   }
   {
-    'match': ', '
+    'match': ','
     'name': 'meta.delimiter.comma.stan'
   }
   {
@@ -187,7 +187,7 @@
         'name': 'constant.numeric.real.stan'
       }
       {
-        'match': '[0-9]+'
+        'match': '[0-9]+(?=[^A-Za-z_])'
         'name': 'constant.numeric.integer.stan'
       }
     ]
