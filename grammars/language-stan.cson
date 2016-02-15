@@ -23,8 +23,12 @@
     'name': 'keyword.control.stan'
   }
   {
-    'match': '\\b(lower|upper)\\b'
-    'name': 'keyword.other.range.stan'
+    'match': '\\b(lower|upper)\\s*(=)'
+    'captures':
+      '1':
+        'name': 'keyword.other.range.stan'
+      '2':
+        'name': 'keyword.operator.equal.stan'
   }
   {
     'match': '\\b(print|increment_log_prob|reject|integrate_ode)\\b'
@@ -90,8 +94,30 @@
   }
 ]
 'repository':
+  # Stan modeling language user guide suggests using Javadoc/Doxygen style
+  # for documenting functions
+  'docblock':
+    'patterns': [
+      {
+        'match': '(?<!\\w)@(param|return)\\b'
+        'name': 'storage.type.class.standoc'
+      }
+    ]
   'comments':
     'patterns': [
+      {
+        'begin': '/\\*\\*(?!/)'
+        'captures':
+          '0':
+            'name': 'punctuation.definition.comment.stan'
+        'patterns': [
+          {
+            'include': '#docblock'
+          }
+        ]
+        'end': '\\*/'
+        'name': 'comment.block.documentation.stan'
+      }
       {
         'comment': '/* comment block */'
         'begin': '/\\*'
@@ -159,6 +185,7 @@
         'match': '\\|\\||&&'
         'name': 'keyword.operator.logical.stan'
       }
+
       {
         'match': '==|!=|<=?|>=?'
         'name': 'keyword.operator.comparison.stan'
@@ -166,6 +193,10 @@
       {
         'match': '!'
         'name': 'keyword.operator.logical.stan'
+      }
+      {
+        'match': '='
+        'name': 'keyword.operator.argument.stan'
       }
       {
         'match': "\\+|-|\\.?\\*|\\.?/|%|\\\\|\\^|'"

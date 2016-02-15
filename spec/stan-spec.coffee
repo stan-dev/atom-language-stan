@@ -36,6 +36,23 @@ describe "Stan grammar", ->
       expect(tokens[1]).toEqual value: ' foo ', scopes: ['source.stan', 'comment.block.stan']
       expect(tokens[2]).toEqual value: '*/', scopes: ['source.stan', 'comment.block.stan', 'punctuation.definition.comment.stan']
 
+    it "tokenizes /** */ comments", ->
+      {tokens} = grammar.tokenizeLine('/***/')
+      expect(tokens[0]).toEqual value: '/**', scopes: ['source.stan', 'comment.block.documentation.stan', 'punctuation.definition.comment.stan']
+      expect(tokens[1]).toEqual value: '*/', scopes: ['source.stan', 'comment.block.documentation.stan', 'punctuation.definition.comment.stan']
+
+      {tokens} = grammar.tokenizeLine('/** foo */')
+      expect(tokens[0]).toEqual value: '/**', scopes: ['source.stan', 'comment.block.documentation.stan', 'punctuation.definition.comment.stan']
+      expect(tokens[1]).toEqual value: ' foo ', scopes: ['source.stan', 'comment.block.documentation.stan']
+      expect(tokens[2]).toEqual value: '*/', scopes: ['source.stan', 'comment.block.documentation.stan', 'punctuation.definition.comment.stan']
+
+      {tokens} = grammar.tokenizeLine('/** @param */')
+      expect(tokens[0]).toEqual value: '/**', scopes: ['source.stan', 'comment.block.documentation.stan', 'punctuation.definition.comment.stan']
+      expect(tokens[2]).toEqual value: '@param', scopes: ['source.stan', 'comment.block.documentation.stan', 'storage.type.class.standoc']
+      expect(tokens[3]).toEqual value: ' ', scopes: ['source.stan', 'comment.block.documentation.stan']
+      expect(tokens[4]).toEqual value: '*/', scopes: ['source.stan', 'comment.block.documentation.stan', 'punctuation.definition.comment.stan']
+
+
   describe "strings", ->
     it "tokenizes them", ->
       {tokens} = grammar.tokenizeLine('"a+12 /"')
@@ -165,11 +182,18 @@ describe "Stan grammar", ->
         expect(tokens[0]).toEqual value: kw, scopes: ['source.stan', 'keyword.control.stan']
 
   describe "range constraints", ->
+    bounds = ['lower', 'upper']
     it "tokenizes them", ->
-      bounds = ['lower', 'upper']
+      for kw in bounds
+        {tokens} = grammar.tokenizeLine(kw + ' =')
+        expect(tokens[0]).toEqual value: kw, scopes: ['source.stan', 'keyword.other.range.stan']
+        expect(tokens[1]).toEqual value: ' ', scopes: ['source.stan']
+        expect(tokens[2]).toEqual value: '=', scopes: ['source.stan', 'keyword.operator.equal.stan']
+
+    it "does not tokenize them when not followed by =", ->
       for kw in bounds
         {tokens} = grammar.tokenizeLine(kw)
-        expect(tokens[0]).toEqual value: kw, scopes: ['source.stan', 'keyword.other.range.stan']
+        expect(tokens[0]).toEqual value: kw, scopes: ['source.stan']
 
   describe "special functions", ->
     it "tokenizes them", ->
