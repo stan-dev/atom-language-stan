@@ -121,6 +121,29 @@
   'comments':
     'patterns': [
       {
+        'begin': '^\\s*(#)(include)'
+        'beginCaptures':
+          '1':
+            'name': 'punctuation.definition.comment.stan'
+          '2':
+            'name': 'keyword.control.directive.include.stan'
+        'end': '\\n'
+        'name': 'comment.line.preprocessor.stan'
+        'patterns': [
+          {
+            'begin': '["\']'
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.definition.string.begin.stan'
+            'end': '["\']'
+            'endCaptures':
+              '0':
+                'name': 'punctuation.definition.string.end.stan'
+            'name': 'string.quoted.include.stan'
+          }
+        ]
+      }
+      {
         'begin': '/\\*\\*(?!/)'
         'captures':
           '0':

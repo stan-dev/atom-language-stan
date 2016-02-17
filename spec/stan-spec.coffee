@@ -21,7 +21,7 @@ describe "Stan grammar", ->
       expect(tokens[0]).toEqual value: '//', scopes: ['source.stan', 'comment.line.double-slash.stan', 'punctuation.definition.comment.stan']
       expect(tokens[1]).toEqual value: ' comment', scopes: ['source.stan', 'comment.line.double-slash.stan']
 
-    it "tokenizes # comments", ->
+    it "tokenizes number comments", ->
       {tokens} = grammar.tokenizeLine('# comment')
       expect(tokens[0]).toEqual value: '#', scopes: ['source.stan', 'comment.line.number-sign.stan', 'punctuation.definition.comment.stan']
       expect(tokens[1]).toEqual value: ' comment', scopes: ['source.stan', 'comment.line.number-sign.stan']
@@ -140,7 +140,7 @@ describe "Stan grammar", ->
     describe "assignment", ->
 
       it "tokenizes it", ->
-        {tokens} = grammar.tokenizeLine('a <- b');
+        {tokens} = grammar.tokenizeLine('a <- b')
         expect(tokens[0]).toEqual value: 'a', scopes: ['source.stan']
         expect(tokens[1]).toEqual value: ' ', scopes: ['source.stan']
         expect(tokens[2]).toEqual value: '<-', scopes: ['source.stan', 'keyword.operator.assignment.stan']
@@ -149,7 +149,7 @@ describe "Stan grammar", ->
 
     describe "colon", ->
       it "tokenizes it", ->
-        {tokens} = grammar.tokenizeLine('a:b');
+        {tokens} = grammar.tokenizeLine('a:b')
         expect(tokens[0]).toEqual value: 'a', scopes: ['source.stan']
         expect(tokens[1]).toEqual value: ':', scopes: ['source.stan', 'keyword.operator.colon.stan']
         expect(tokens[2]).toEqual value: 'b', scopes: ['source.stan']
@@ -329,3 +329,12 @@ describe "Stan grammar", ->
       expect(tokens[3]).toEqual value: ' ', scopes: ['source.stan']
       expect(tokens[4]).toEqual value: '1', scopes: ['source.stan', 'constant.numeric.integer.stan']
       expect(tokens[5]).toEqual value: ';', scopes: ['source.stan', 'punctuation.terminator.statement.stan']
+
+  describe "include preprocessor directive", ->
+    it "parses it", ->
+      {tokens} = grammar.tokenizeLine('#include "my_includes.txt"')
+      expect(tokens[0]).toEqual value: '#', scopes: ['source.stan', 'comment.line.preprocessor.stan', 'punctuation.definition.comment.stan']
+      expect(tokens[1]).toEqual value: 'include', scopes: ['source.stan', 'comment.line.preprocessor.stan', 'keyword.control.directive.include.stan']
+      expect(tokens[3]).toEqual value: '"', scopes: ['source.stan', 'comment.line.preprocessor.stan', 'string.quoted.include.stan', 'punctuation.definition.string.begin.stan']
+      expect(tokens[4]).toEqual value: 'my_includes.txt', scopes: ['source.stan', 'comment.line.preprocessor.stan', 'string.quoted.include.stan']
+      expect(tokens[5]).toEqual value: '"', scopes: ['source.stan', 'comment.line.preprocessor.stan', 'string.quoted.include.stan', 'punctuation.definition.string.end.stan']
