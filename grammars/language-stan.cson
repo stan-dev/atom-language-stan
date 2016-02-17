@@ -77,6 +77,21 @@
     'name': 'meta.delimiter.comma.stan'
   }
   {
+    'begin': '{'
+    'beginCaptures':
+      '0':
+        'name': 'punctuation.section.block.begin.stan'
+    'end': '}'
+    'endCaptures':
+      '0':
+        'name': 'punctuation.section.block.end.stan'
+    'patterns': [
+      {
+        'include': '$base'
+      }
+    ]
+  }
+  {
     'match': '[{}]'
     'name': 'meta.brace.curly.stan'
   }

@@ -282,10 +282,28 @@ describe "Stan grammar", ->
 
   describe "braces", ->
     it "tokenizes curly brackets", ->
-      brackets = ['{', '}']
-      for b in brackets
-        {tokens} = grammar.tokenizeLine(b)
-        expect(tokens[0]).toEqual value: b, scopes: ['source.stan', 'meta.brace.curly.stan']
+      {tokens} = grammar.tokenizeLine('{}')
+      expect(tokens[0]).toEqual value: '{', scopes: ['source.stan', 'punctuation.section.block.begin.stan']
+      expect(tokens[1]).toEqual value: '}', scopes: ['source.stan', 'punctuation.section.block.end.stan']
+
+      {tokens} = grammar.tokenizeLine('{real a;}')
+      expect(tokens[0]).toEqual value: '{', scopes: ['source.stan', 'punctuation.section.block.begin.stan']
+      expect(tokens[1]).toEqual value: 'real', scopes: ['source.stan', 'storage.type.stan']
+      expect(tokens[2]).toEqual value: ' ', scopes: ['source.stan']
+      expect(tokens[3]).toEqual value: 'a', scopes: ['source.stan']
+      expect(tokens[4]).toEqual value: ';', scopes: ['source.stan', 'punctuation.terminator.statement.stan']
+      expect(tokens[5]).toEqual value: '}', scopes: ['source.stan', 'punctuation.section.block.end.stan']
+
+      lines = grammar.tokenizeLines """{
+        real a;
+      }
+      """
+      expect(lines[0][0]).toEqual value: '{', scopes: ['source.stan', 'punctuation.section.block.begin.stan']
+      expect(lines[1][1]).toEqual value: 'real', scopes: ['source.stan', 'storage.type.stan']
+      expect(lines[1][2]).toEqual value: ' ', scopes: ['source.stan']
+      expect(lines[1][3]).toEqual value: 'a', scopes: ['source.stan']
+      expect(lines[1][4]).toEqual value: ';', scopes: ['source.stan', 'punctuation.terminator.statement.stan']
+      expect(lines[2][0]).toEqual value: '}', scopes: ['source.stan', 'punctuation.section.block.end.stan']
 
     it "tokenizes square brackets", ->
       brackets = ['[', ']']
