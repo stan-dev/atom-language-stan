@@ -233,10 +233,6 @@
         'name': 'keyword.operator.logical.stan'
       }
       {
-        'match': '='
-        'name': 'keyword.operator.argument.stan'
-      }
-      {
         'match': "\\+|-|\\.?\\*|\\.?/|%|\\\\|\\^|'"
         'name': 'keyword.operator.arithmetic.stan'
       }
