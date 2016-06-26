@@ -32,7 +32,7 @@ def patterns(filename):
     print("keywords-others: " + r'\\b' + kw2re(data['keywords']['other']) + r'\\b')
     print("cpp-reserved: " + r'\\b' + kw2re(data['reserved']['cpp']) + r'\\b')
     print("stan-reserved: " + r'\\b' + kw2re(data['reserved']['stan']) + r'\\b')
-    print("functions: " + r'\\b' + kw2re(sorted(data['functions']['names']['all'])) + r'\\b')
+    print("functions: " + r'\\b' + kw2re(data['functions']['names']['all']) + r'\\b')
     print("distributions: " + r'\\b(~)\\s*' + kw2re(distributions) + r'\\b')
     operators = []
     for x in sorted(data['operators'], key = len, reverse = True):
