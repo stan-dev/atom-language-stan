@@ -15,25 +15,12 @@ def patterns(filename):
     with open(filename, "r") as f:
         data = json.load(f)
 
-    types = set()
-    for k in data['types']:
-        for x in data['types'][k]:
-            types.add(x)
-    types = sorted(list(types))
-
-    distributions = [re.sub(r'_p(dm)f$', '', x)
-                     for x in data['functions']['names']['density']]
-
-    print("types: " + r'\\b' + kw2re(types) + r'\\b')
-    print("blocks: " + r'\\b' + kw2re(re.sub(r'\s+', r'\\\\s+', x) for x in data['blocks']) + r'\\b')
-    print("keywords-range-constraings: " + r'\\b' + kw2re(data['keywords']['range_constraints']) + r'\\b')
-    print("keywords-special-functions: " + r'\\b' + kw2re(data['keywords']['functions']) + r'\\b')
-    print("keywords-control-flow:" + r'\\b' + kw2re(data['keywords']['control']) + r'\\b')
-    print("keywords-others: " + r'\\b' + kw2re(data['keywords']['other']) + r'\\b')
-    print("cpp-reserved: " + r'\\b' + kw2re(data['reserved']['cpp']) + r'\\b')
-    print("stan-reserved: " + r'\\b' + kw2re(data['reserved']['stan']) + r'\\b')
-    print("functions: " + r'\\b' + kw2re(data['functions']['names']['all']) + r'\\b')
-    print("distributions: " + r'\\b(~)\\s*' + kw2re(distributions) + r'\\b')
+    functions = [k for k, v in data['functions'].items() if not v['operator']]
+    distributions = [v['sampling'] for k, v in data['functions'].items() if v['sampling']]
+    print("functions: \n" + r"'match': '\\b" + kw2re(functions) + r"\\b'")
+    print()
+    print("distributions: \n" + r"'match': '\\b(~)\\s*" + kw2re(distributions) + r"\\b'")
+    print()
     operators = []
     for x in sorted(data['operators'], key = len, reverse = True):
         if x == '\\':
@@ -44,7 +31,8 @@ def patterns(filename):
             x = ''.join('[%s]' % el for el in x)
 
         operators.append(x)
-    print("operators: " + r'\\b' + kw2re(operators) + r'\\b')
+    print("operators: \n" + r"'match': '\\b" + kw2re(operators) + r"\\b'")
+    
 
 
 def main():
