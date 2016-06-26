@@ -71,9 +71,12 @@
       $0
     }
     '''
-  'ODE':
-    'prefix': 'ode'
-    'body': 'integrate_ode(${1:function}, ${2:y0}, ${3:t0}, ${4:t}, ${5:theta}, ${6:x_r}, ${7:x_i});$0'
+  'ODE BDF':
+    'prefix': 'integrate_odf_bdf'
+    'body': 'integrate_ode_bdf(${1:function}, ${2:y0}, ${3:t0}, ${4:t}, ${5:theta}, ${6:x_r}, ${7:x_i});$0'
+  'ODE RK45':
+    'prefix': 'integrate_odf_rk45'
+    'body': 'integrate_ode_rk45(${1:function}, ${2:y0}, ${3:t0}, ${4:t}, ${5:theta}, ${6:x_r}, ${7:x_i});$0'
   'Function block':
     'prefix': 'funs'
     'body': '''
