@@ -139,11 +139,11 @@ describe "Stan grammar", ->
 
     describe "assignment", ->
 
-      it "tokenizes <-", ->
+      it "tokenizes <- as deprecated", ->
         {tokens} = grammar.tokenizeLine('a <- b')
         expect(tokens[0]).toEqual value: 'a', scopes: ['source.stan']
         expect(tokens[1]).toEqual value: ' ', scopes: ['source.stan']
-        expect(tokens[2]).toEqual value: '<-', scopes: ['source.stan', 'keyword.operator.assignment.leftarrow.stan']
+        expect(tokens[2]).toEqual value: '<-', scopes: ['source.stan', 'invalid.deprecated.assignment.stan']
         expect(tokens[3]).toEqual value: ' ', scopes: ['source.stan']
         expect(tokens[4]).toEqual value: 'b', scopes: ['source.stan']
 
@@ -151,7 +151,7 @@ describe "Stan grammar", ->
         {tokens} = grammar.tokenizeLine('a = b')
         expect(tokens[0]).toEqual value: 'a', scopes: ['source.stan']
         expect(tokens[1]).toEqual value: ' ', scopes: ['source.stan']
-        expect(tokens[2]).toEqual value: '=', scopes: ['source.stan', 'keyword.operator.assignment.equals.stan']
+        expect(tokens[2]).toEqual value: '=', scopes: ['source.stan', 'keyword.operator.assignment.stan']
         expect(tokens[3]).toEqual value: ' ', scopes: ['source.stan']
         expect(tokens[4]).toEqual value: 'b', scopes: ['source.stan']
 
@@ -209,7 +209,12 @@ describe "Stan grammar", ->
         {tokens} = grammar.tokenizeLine(kw + ' =')
         expect(tokens[0]).toEqual value: kw, scopes: ['source.stan', 'keyword.other.range.stan']
         expect(tokens[1]).toEqual value: ' ', scopes: ['source.stan']
-        expect(tokens[2]).toEqual value: '=', scopes: ['source.stan', 'keyword.operator.equal.stan']
+        expect(tokens[2]).toEqual value: '=', scopes: ['source.stan', 'punctuation.operator.equal.stan']
+    it "does not tokenize them if not followed by a =", ->
+      for kw in bounds
+        {tokens} = grammar.tokenizeLine(kw)
+        expect(tokens[0]).toEqual value: kw, scopes: ['source.stan']
+
 
     it "does not tokenize them when not followed by =", ->
       for kw in bounds
@@ -217,12 +222,21 @@ describe "Stan grammar", ->
         expect(tokens[0]).toEqual value: kw, scopes: ['source.stan']
 
   describe "special functions", ->
-    keywords = ['print', 'increment_log_prob', 'reject', 'integrate_ode',
-                'integrate_ode_rk45', 'integrate_ode_bdf', 'target', 'log_prob']
+    keywords = ['print', 'reject']
     it "tokenizes them", ->
       for kw in keywords
         {tokens} = grammar.tokenizeLine(kw + ' (')
         expect(tokens[0]).toEqual value: kw, scopes: ['source.stan', 'keyword.other.special-functions.stan']
+
+  describe "deprecated functions", ->
+    keywords = ['increment_log_prob', 'integrate_ode', 'get_lp',
+                'binomial_coefficient_log', 'multiply_log', 'normal_log',
+                'normal_cdf_log', 'normal_ccdf_log']
+    it "tokenizes them", ->
+      for kw in keywords
+        {tokens} = grammar.tokenizeLine(kw + ' (')
+        expect(tokens[0]).toEqual value: kw, scopes: ['source.stan', 'invalid.deprecated.function.stan']
+
 
   describe "return statement", ->
     it "tokenizes it", ->
@@ -260,6 +274,14 @@ describe "Stan grammar", ->
         expect(tokens[0]).toEqual value: '~', scopes: ['source.stan', 'keyword.operator.sampling.stan']
         expect(tokens[1]).toEqual value: ' ', scopes: ['source.stan']
         expect(tokens[2]).toEqual value: distr, scopes: ['source.stan', 'support.function.distribution.stan']
+
+    it "tokenizes arbitrary distribution after ~", ->
+      # only use a few examples
+      line = '~ foo'
+      {tokens} = grammar.tokenizeLine(line)
+      expect(tokens[0]).toEqual value: '~', scopes: ['source.stan', 'keyword.operator.sampling.stan']
+      expect(tokens[1]).toEqual value: ' ', scopes: ['source.stan']
+      expect(tokens[2]).toEqual value: 'foo', scopes: ['source.stan']
 
     it "tokenizes them using when target += foo(y | theta)", ->
       # only use a few examples
@@ -367,10 +389,10 @@ describe "Stan grammar", ->
       {tokens} = grammar.tokenizeLine(';')
       expect(tokens[0]).toEqual value: ';', scopes: ['source.stan', 'punctuation.terminator.statement.stan']
 
-      {tokens} = grammar.tokenizeLine('a <- 1;')
+      {tokens} = grammar.tokenizeLine('a = 1;')
       expect(tokens[0]).toEqual value: 'a', scopes: ['source.stan']
       expect(tokens[1]).toEqual value: ' ', scopes: ['source.stan']
-      expect(tokens[2]).toEqual value: '<-', scopes: ['source.stan', 'keyword.operator.assignment.leftarrow.stan']
+      expect(tokens[2]).toEqual value: '=', scopes: ['source.stan', 'keyword.operator.assignment.stan']
       expect(tokens[3]).toEqual value: ' ', scopes: ['source.stan']
       expect(tokens[4]).toEqual value: '1', scopes: ['source.stan', 'constant.numeric.integer.stan']
       expect(tokens[5]).toEqual value: ';', scopes: ['source.stan', 'punctuation.terminator.statement.stan']

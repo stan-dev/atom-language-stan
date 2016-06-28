@@ -9,30 +9,24 @@ import re
 import sys
 
 def kw2re(x):
-    return r'(%s)' % '|'.join(x)
+    return r'(%s)' % '|'.join(sorted(list(set(x))))
 
 def patterns(filename):
     with open(filename, "r") as f:
         data = json.load(f)
 
-    functions = [k for k, v in data['functions'].items() if not v['operator']]
-    distributions = [v['sampling'] for k, v in data['functions'].items() if v['sampling']]
+    functions = [k for k, v in data['functions'].items()
+                    if not v['operator'] and not v['deprecated'] and not v['keyword']]
+    deprecated_functions = [k for k, v in data['functions'].items()
+                                    if not v['operator'] and v['deprecated']]
+    distributions = [v['sampling'] for k, v in data['functions'].items()
+                            if v['sampling'] and not v['deprecated']]
     print("functions: \n" + r"'match': '\\b" + kw2re(functions) + r"\\b'")
     print()
     print("distributions: \n" + r"'match': '\\b(~)\\s*" + kw2re(distributions) + r"\\b'")
     print()
-    operators = []
-    for x in sorted(data['operators'], key = len, reverse = True):
-        if x == '\\':
-            x = r'\\\\'
-        elif x == '^':
-            x = r'\\^'
-        else:
-            x = ''.join('[%s]' % el for el in x)
-
-        operators.append(x)
-    print("operators: \n" + r"'match': '\\b" + kw2re(operators) + r"\\b'")
-    
+    print("deprecated_functions: \n" + r"'match': '\\b" + kw2re(deprecated_functions) + r"\\b'")
+    print()
 
 
 def main():
