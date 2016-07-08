@@ -69,6 +69,7 @@
     'match': '\\b([a-zA-Z0-9_]*__|[0-9_][A-Za-z0-9_]+|_)\\b'
     'name': 'invalid.illegal.variable'
   }
+
   {
     'match': '\\b[A-Za-z][0-9A-Za-z_]*\\b'
     'comment': 'generic variable names'
@@ -117,6 +118,92 @@
   }
 ]
 'repository':
+  'functiondef'
+  {
+    # int foo() {}
+    'begin': '(?=(void|int|real|vector|row_vector|matrix)(?:\\[(?:,\\s)*\\])\\s*[A-Za-z][A-Za-z0-9_]*\\s*\\('
+    'end': '(?<=})'
+    'patterns': [
+      {
+        'include': '#comments'
+      }
+      {
+        'include': '#function_body'
+      }
+      {
+        'begin': '\\G'
+        'end': '(?!\\G)(?<=\\))'
+        'name': 'meta.function.stan'
+        'patterns': [
+          {
+            'match': '([A-Za-z][A-Za-z0-9_]*)'
+          }
+        ]
+      }
+    ]
+  'function_params':
+    'patterns': [
+      {
+        'begin': '\\('
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.definition.parameters.begin.bracket.round.stan'
+        'end': '\\)'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.definition.parameters.end.bracket.round.stan'
+        'name': 'meta.parameters.stan'
+        'patterns': [
+          {
+            'match': '((?:int|real|vector|row_vector|matrix)(?:\\[(?:,\\s*)*\\])?)([a-zA-Z][A-Za-z0-9_]*)'
+            'captures':
+              '1':
+                'name': 'storage.type.function.parameter'
+              '2':
+                'name': 'variable.parameter.function.stan'
+          }
+        ]
+      }
+    ]
+    'function_body':
+    'patterns': [
+      {
+        'begin': '{'
+        'beginCaptures':
+          '0':
+            'name': 'punctuation.definition.function.body.begin.bracket.curly.stan'
+        'end': '}'
+        'endCaptures':
+          '0':
+            'name': 'punctuation.definition.function.body.end.bracket.curly.stan'
+        'patterns': [
+          {
+            'include': '$self'
+          }
+        ]
+      }
+    ]
+  'function_innards':
+    'patterns': [
+      {
+        'match': '(void|(?:(?:int|real|vector|row_vector|matrix)(?:\\[(?:,\\s)*\\])))\\s+([A-Za-z][A-Za-z0-9_]*)'
+        'captures':
+          '1':
+            'name': 'storage.type.function.return.stan'
+          '3':
+            'name': 'storage.modifier.generator.js'
+      }
+      {
+        'match': '[a-zA-Z][A-Za-z0-9_]*(?=\\s*\\()'
+        'name': 'entity.name.function.stan'
+      }
+      {
+        'include': '#function_params'
+      }
+      {
+        'include': '#comments'
+      }
+    ]
   # Stan modeling language user guide suggests using Javadoc/Doxygen style
   # for documenting functions
   'docblock':

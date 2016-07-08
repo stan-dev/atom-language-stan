@@ -405,3 +405,5 @@ describe "Stan grammar", ->
       expect(tokens[3]).toEqual value: '"', scopes: ['source.stan', 'comment.line.preprocessor.stan', 'string.quoted.include.stan', 'punctuation.definition.string.begin.stan']
       expect(tokens[4]).toEqual value: 'my_includes.txt', scopes: ['source.stan', 'comment.line.preprocessor.stan', 'string.quoted.include.stan']
       expect(tokens[5]).toEqual value: '"', scopes: ['source.stan', 'comment.line.preprocessor.stan', 'string.quoted.include.stan', 'punctuation.definition.string.end.stan']
+
+  # TODO: Add function declarations
