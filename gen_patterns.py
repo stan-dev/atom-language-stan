@@ -23,7 +23,7 @@ def patterns(filename):
                             if v['sampling'] and not v['deprecated']]
     print("functions: \n" + r"'match': '\\b" + kw2re(functions) + r"\\b'")
     print()
-    print("distributions: \n" + r"'match': '\\b(~)\\s*" + kw2re(distributions) + r"\\b'")
+    print("distributions: \n" + r"'match': '([~])\\s*" + kw2re(distributions) + r"\\b'")
     print()
     print("deprecated_functions: \n" + r"'match': '\\b" + kw2re(deprecated_functions) + r"\\b'")
     print()
