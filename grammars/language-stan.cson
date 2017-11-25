@@ -129,25 +129,58 @@
   'comments':
     'patterns': [
       {
-        'begin': '^\\s*(#)(include)'
+        'begin': '^\\s*((#)\\s*(include))\\b\\s*'
+        'end': '\\s*(?=(?://|/\\*|#)|\\n|$)'
         'beginCaptures':
           '1':
-            'name': 'punctuation.definition.comment.stan'
-          '2':
             'name': 'keyword.control.directive.include.stan'
-        'end': '\\n'
-        'name': 'comment.line.preprocessor.stan'
+          '2':
+            'name': 'punctuation.definition.directive.stan'
+          '4':
+            'name': 'string.quoted.other.include.stan'
+        'name': 'meta.preprocessor.include.stan'
+        # This is based on how rstan::stanc_builder handles #include directives
+        # but it is more strict. stanc_builder simply removes quotes and <>
+        # to get the filename, it doesn't check that they match.
         'patterns': [
+          # check for quoted strings first
           {
-            'begin': '["\']'
+            'begin': '"'
             'beginCaptures':
               '0':
                 'name': 'punctuation.definition.string.begin.stan'
-            'end': '["\']'
+            'end': '"'
             'endCaptures':
               '0':
                 'name': 'punctuation.definition.string.end.stan'
-            'name': 'string.quoted.include.stan'
+            'name': 'string.quoted.double.include.stan'
+          }
+          {
+            'begin': '<'
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.definition.string.begin.stan'
+            'end': '>'
+            'endCaptures':
+              '0':
+                'name': 'punctuation.definition.string.end.stan'
+            'name': 'string.quoted.other.lt-gt.include.stan'
+          }
+          {
+            'begin': '\''
+            'beginCaptures':
+              '0':
+                'name': 'punctuation.definition.string.begin.stan'
+            'end': '\''
+            'endCaptures':
+              '0':
+                'name': 'punctuation.definition.string.end.stan'
+            'name': 'string.quoted.single.include.stan'
+          }
+          # then capture anything else to get non-quoted strings
+          {
+            'match': '.+'
+            'name': 'string.quoted.other.noquote.include.stan'
           }
         ]
       }

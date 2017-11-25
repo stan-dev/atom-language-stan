@@ -998,30 +998,139 @@ describe("Stan grammar", function() {
         })
     });
 
-    describe("include preprocessor directive", () => {
-        it("parses it", function() {
-            const {
-                tokens
-            } = grammar.tokenizeLine('#include "my_includes.txt"');
+    describe("include pre-processor directive", () => {
+        it("parses include with no quotes around file", function() {
+            const {tokens} =
+                grammar.tokenizeLine('#' + 'include my_includes.txt');
             expect(tokens[0]).toEqual({
                 value: '#',
-                scopes: ['source.stan', 'comment.line.preprocessor.stan', 'punctuation.definition.comment.stan']
+                scopes: ['source.stan',
+                         'meta.preprocessor.include.stan',
+                         'keyword.control.directive.include.stan',
+                         'punctuation.definition.directive.stan']
             });
             expect(tokens[1]).toEqual({
                 value: 'include',
-                scopes: ['source.stan', 'comment.line.preprocessor.stan', 'keyword.control.directive.include.stan']
+                scopes: ['source.stan',
+                         'meta.preprocessor.include.stan',
+                         'keyword.control.directive.include.stan']
+            });
+            expect(tokens[3]).toEqual({
+                value: 'my_includes.txt',
+                scopes: ['source.stan',
+                         'meta.preprocessor.include.stan',
+                         'string.quoted.other.noquote.include.stan']
+            });
+        });
+        it("parses include with double quotes around file", function() {
+            const {tokens} =
+                grammar.tokenizeLine('#' + 'include "my_includes.txt"');
+            expect(tokens[0]).toEqual({
+                value: '#',
+                scopes: ['source.stan',
+                         'meta.preprocessor.include.stan',
+                         'keyword.control.directive.include.stan',
+                         'punctuation.definition.directive.stan']
+            });
+            expect(tokens[1]).toEqual({
+                value: 'include',
+                scopes: ['source.stan',
+                         'meta.preprocessor.include.stan',
+                         'keyword.control.directive.include.stan']
             });
             expect(tokens[3]).toEqual({
                 value: '"',
-                scopes: ['source.stan', 'comment.line.preprocessor.stan', 'string.quoted.include.stan', 'punctuation.definition.string.begin.stan']
+                scopes: ['source.stan',
+                         'meta.preprocessor.include.stan',
+                         'string.quoted.double.include.stan',
+                         'punctuation.definition.string.begin.stan']
             });
             expect(tokens[4]).toEqual({
                 value: 'my_includes.txt',
-                scopes: ['source.stan', 'comment.line.preprocessor.stan', 'string.quoted.include.stan']
+                scopes: ['source.stan',
+                         'meta.preprocessor.include.stan',
+                         'string.quoted.double.include.stan']
             });
             expect(tokens[5]).toEqual({
                 value: '"',
-                scopes: ['source.stan', 'comment.line.preprocessor.stan', 'string.quoted.include.stan', 'punctuation.definition.string.end.stan']
+                scopes: ['source.stan',
+                         'meta.preprocessor.include.stan',
+                         'string.quoted.double.include.stan',
+                         'punctuation.definition.string.end.stan']
+            });
+        });
+        it("parses include with <> around file", function() {
+            const {tokens} =
+                grammar.tokenizeLine('#' + 'include <my_includes.txt>');
+            expect(tokens[0]).toEqual({
+                value: '#',
+                scopes: ['source.stan',
+                         'meta.preprocessor.include.stan',
+                         'keyword.control.directive.include.stan',
+                         'punctuation.definition.directive.stan']
+            });
+            expect(tokens[1]).toEqual({
+                value: 'include',
+                scopes: ['source.stan',
+                         'meta.preprocessor.include.stan',
+                         'keyword.control.directive.include.stan']
+            });
+            expect(tokens[3]).toEqual({
+                value: '<',
+                scopes: ['source.stan',
+                         'meta.preprocessor.include.stan',
+                         'string.quoted.other.lt-gt.include.stan',
+                         'punctuation.definition.string.begin.stan']
+            });
+            expect(tokens[4]).toEqual({
+                value: 'my_includes.txt',
+                scopes: ['source.stan',
+                         'meta.preprocessor.include.stan',
+                         'string.quoted.other.lt-gt.include.stan']
+            });
+            expect(tokens[5]).toEqual({
+                value: '>',
+                scopes: ['source.stan',
+                         'meta.preprocessor.include.stan',
+                         'string.quoted.other.lt-gt.include.stan',
+                         'punctuation.definition.string.end.stan']
+            });
+        });
+        it("parses include with single quotes around file", function() {
+            const {tokens} =
+                grammar.tokenizeLine('#' + 'include \'my_includes.txt\'');
+            expect(tokens[0]).toEqual({
+                value: '#',
+                scopes: ['source.stan',
+                         'meta.preprocessor.include.stan',
+                         'keyword.control.directive.include.stan',
+                         'punctuation.definition.directive.stan']
+            });
+            expect(tokens[1]).toEqual({
+                value: 'include',
+                scopes: ['source.stan',
+                         'meta.preprocessor.include.stan',
+                         'keyword.control.directive.include.stan']
+            });
+            expect(tokens[3]).toEqual({
+                value: '\'',
+                scopes: ['source.stan',
+                         'meta.preprocessor.include.stan',
+                         'string.quoted.single.include.stan',
+                         'punctuation.definition.string.begin.stan']
+            });
+            expect(tokens[4]).toEqual({
+                value: 'my_includes.txt',
+                scopes: ['source.stan',
+                         'meta.preprocessor.include.stan',
+                         'string.quoted.single.include.stan']
+            });
+            expect(tokens[5]).toEqual({
+                value: '\'',
+                scopes: ['source.stan',
+                         'meta.preprocessor.include.stan',
+                         'string.quoted.single.include.stan',
+                         'punctuation.definition.string.end.stan']
             });
         });
     });
