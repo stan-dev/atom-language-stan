@@ -1,6 +1,6 @@
 'name': 'Stan'
 'scopeName': 'source.stan'
-'fileTypes': [ 'stan' ]
+'fileTypes': [ 'stan', 'stanfuncs' ]
 'patterns': [
   {
     'include': '#comments'
