@@ -1,0 +1,68 @@
+{
+  ".source.stan": {
+    "For": {
+      "prefix": "for",
+      "body": "for (${1:var} in ${2:start}:${3:end}) {\n  $0\n}"
+    },
+    "If": {
+      "prefix": "if",
+      "body": "if (${1:condition}) {\n  $0\n}"
+    },
+    "Else If": {
+      "prefix": "ei",
+      "body": "else  if (${1:condition}) {\n  $0\n}"
+    },
+    "Lower": {
+      "prefix": "<lower",
+      "body": "<lower = ${1:expression}>$0"
+    },
+    "Upper": {
+      "prefix": "<upper",
+      "content": "<upper = ${1:expression}>$0"
+    },
+    "Lower/Upper": {
+      "prefix": "<lu",
+      "content": "<lower = ${1:expression}, upper = ${2:expression}>$0"
+    },
+    "While": {
+      "prefix": "while",
+      "content": "while (${1:condition}) {\n  $0\n}"
+    },
+    "Transformed Parameters": {
+      "prefix": "tpar",
+      "body": "transformed parameters {\n  $0\n}"
+    },
+    "Data": {
+      "prefix": "data",
+      "body": "data {\n  $0\n}"
+    },
+    "Transformed Data": {
+      "prefix": "tdata",
+      "body": "transformed data {\n  $0\n}"
+    },
+    "Generated Quantities": {
+      "prefix": "gen",
+      "body": "generated quantities {\n  $0\n}"
+    },
+    "Model": {
+      "prefix": "mdl",
+      "body": "model {\n  $0\n}"
+    },
+    "ODE BDF": {
+      "prefix": "integrate_odf_bdf",
+      "body": "integrate_ode_bdf(${1:function}, ${2:y0}, ${3:t0}, ${4:t}, ${5:theta}, ${6:x_r}, ${7:x_i});$0"
+    },
+    "ODE RK45": {
+      "prefix": "integrate_odf_rk45",
+      "body": "integrate_ode_rk45(${1:function}, ${2:y0}, ${3:t0}, ${4:t}, ${5:theta}, ${6:x_r}, ${7:x_i});$0"
+    },
+    "Function block": {
+      "prefix": "funs",
+      "body": "functions {\n  $0\n}"
+    },
+    "Function declaration": {
+      "prefix": "fun",
+      "body": "${1:return} ${2:name} (${3:args}) {\n  $0\n}"
+    }
+  }
+}

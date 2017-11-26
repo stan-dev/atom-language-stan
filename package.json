@@ -10,5 +10,7 @@
   "bugs": {
     "url": "https://github.com/jrnold/atom-language-stan/issues"
   },
-  "dependencies": {}
+  "dependencies": {
+    "cson": "^4.1.0"
+  }
 }

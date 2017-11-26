@@ -259,7 +259,7 @@ describe("Stan grammar", function() {
                     } = grammar.tokenizeLine(`a ${operator} b`);
                     expect(tokens[0]).toEqual({
                         value: 'a',
-                        scopes: ['source.stan']
+                        scopes: ['source.stan', 'variable.other.identifier.stan']
                     });
                     expect(tokens[1]).toEqual({
                         value: ' ',
@@ -275,7 +275,7 @@ describe("Stan grammar", function() {
                     });
                     expect(tokens[4]).toEqual({
                         value: 'b',
-                        scopes: ['source.stan']
+                        scopes: ['source.stan', 'variable.other.identifier.stan']
                     });
                 }
             });
@@ -291,7 +291,7 @@ describe("Stan grammar", function() {
                     } = grammar.tokenizeLine(`a ${operator} b`);
                     expect(tokens[0]).toEqual({
                         value: 'a',
-                        scopes: ['source.stan']
+                        scopes: ['source.stan', 'variable.other.identifier.stan']
                     });
                     expect(tokens[1]).toEqual({
                         value: ' ',
@@ -307,7 +307,7 @@ describe("Stan grammar", function() {
                     });
                     expect(tokens[4]).toEqual({
                         value: 'b',
-                        scopes: ['source.stan']
+                        scopes: ['source.stan', 'variable.other.identifier.stan']
                     });
                 }
             });
@@ -323,7 +323,7 @@ describe("Stan grammar", function() {
                     } = grammar.tokenizeLine(`a ${operator} b`);
                     expect(tokens[0]).toEqual({
                         value: 'a',
-                        scopes: ['source.stan']
+                        scopes: ['source.stan', 'variable.other.identifier.stan']
                     });
                     expect(tokens[1]).toEqual({
                         value: ' ',
@@ -339,13 +339,13 @@ describe("Stan grammar", function() {
                     });
                     expect(tokens[4]).toEqual({
                         value: 'b',
-                        scopes: ['source.stan']
+                        scopes: ['source.stan', 'variable.other.identifier.stan']
                     });
                 }
             });
         });
 
-        describe("assignment", function() {
+        describe("assignment operators", function() {
 
             it("tokenizes <- as deprecated", function() {
                 const {
@@ -353,7 +353,7 @@ describe("Stan grammar", function() {
                 } = grammar.tokenizeLine('a <- b');
                 expect(tokens[0]).toEqual({
                     value: 'a',
-                    scopes: ['source.stan']
+                    scopes: ['source.stan', 'variable.other.identifier.stan']
                 });
                 expect(tokens[1]).toEqual({
                     value: ' ',
@@ -369,35 +369,41 @@ describe("Stan grammar", function() {
                 });
                 expect(tokens[4]).toEqual({
                     value: 'b',
-                    scopes: ['source.stan']
+                    scopes: ['source.stan', 'variable.other.identifier.stan']
                 });
             });
 
-            it("tokenizes =", function() {
-                const {
-                    tokens
-                } = grammar.tokenizeLine('a = b');
-                expect(tokens[0]).toEqual({
-                    value: 'a',
-                    scopes: ['source.stan']
+            let operators = ['+=', '-=', '/=', '*=', '.*=', './=', '=']
+            for (let op of operators) {
+                it(`tokenizes ${op} as an assignment operator`, function() {
+                    const {
+                        tokens
+                    } = grammar.tokenizeLine(`a ${op} b`);
+                    expect(tokens[0]).toEqual({
+                        value: 'a',
+                        scopes: ['source.stan',
+                                 'variable.other.identifier.stan']
+                    });
+                    expect(tokens[1]).toEqual({
+                        value: ' ',
+                        scopes: ['source.stan']
+                    });
+                    expect(tokens[2]).toEqual({
+                        value: `${op}`,
+                        scopes: ['source.stan',
+                                 'keyword.operator.assignment.stan']
+                    });
+                    expect(tokens[3]).toEqual({
+                        value: ' ',
+                        scopes: ['source.stan']
+                    });
+                    expect(tokens[4]).toEqual({
+                        value: 'b',
+                        scopes: ['source.stan',
+                                 'variable.other.identifier.stan']
+                    });
                 });
-                expect(tokens[1]).toEqual({
-                    value: ' ',
-                    scopes: ['source.stan']
-                });
-                expect(tokens[2]).toEqual({
-                    value: '=',
-                    scopes: ['source.stan', 'keyword.operator.assignment.stan']
-                });
-                expect(tokens[3]).toEqual({
-                    value: ' ',
-                    scopes: ['source.stan']
-                });
-                expect(tokens[4]).toEqual({
-                    value: 'b',
-                    scopes: ['source.stan']
-                });
-            });
+            }
         });
 
         describe("colon", () =>
@@ -407,7 +413,7 @@ describe("Stan grammar", function() {
                 } = grammar.tokenizeLine('a:b');
                 expect(tokens[0]).toEqual({
                     value: 'a',
-                    scopes: ['source.stan']
+                    scopes: ['source.stan', 'variable.other.identifier.stan']
                 });
                 expect(tokens[1]).toEqual({
                     value: ':',
@@ -415,7 +421,7 @@ describe("Stan grammar", function() {
                 });
                 expect(tokens[2]).toEqual({
                     value: 'b',
-                    scopes: ['source.stan']
+                    scopes: ['source.stan', 'variable.other.identifier.stan']
                 });
             })
         );
@@ -427,7 +433,7 @@ describe("Stan grammar", function() {
                 } = grammar.tokenizeLine('a ? b : c');
                 expect(tokens[0]).toEqual({
                     value: 'a',
-                    scopes: ['source.stan']
+                    scopes: ['source.stan', 'variable.other.identifier.stan']
                 });
                 expect(tokens[1]).toEqual({
                     value: ' ',
@@ -443,7 +449,7 @@ describe("Stan grammar", function() {
                 });
                 expect(tokens[4]).toEqual({
                     value: 'b',
-                    scopes: ['source.stan']
+                    scopes: ['source.stan', 'variable.other.identifier.stan']
                 });
                 expect(tokens[5]).toEqual({
                     value: ' ',
@@ -459,7 +465,7 @@ describe("Stan grammar", function() {
                 });
                 expect(tokens[8]).toEqual({
                     value: 'c',
-                    scopes: ['source.stan']
+                    scopes: ['source.stan', 'variable.other.identifier.stan']
                 });
             })
         );
@@ -547,7 +553,7 @@ describe("Stan grammar", function() {
                 } = grammar.tokenizeLine(kw);
                 expect(tokens[0]).toEqual({
                     value: kw,
-                    scopes: ['source.stan']
+                    scopes: ['source.stan', 'variable.other.identifier.stan']
                 });
             }
         });
@@ -559,7 +565,7 @@ describe("Stan grammar", function() {
                 } = grammar.tokenizeLine(kw);
                 expect(tokens[0]).toEqual({
                     value: kw,
-                    scopes: ['source.stan']
+                    scopes: ['source.stan', 'variable.other.identifier.stan']
                 });
             }
         });
@@ -640,7 +646,7 @@ describe("Stan grammar", function() {
             } = grammar.tokenizeLine('fooT');
             expect(tokens[0]).toEqual({
                 value: 'fooT',
-                scopes: ['source.stan']
+                scopes: ['source.stan', 'variable.other.identifier.stan']
             });
         });
     });
@@ -660,6 +666,29 @@ describe("Stan grammar", function() {
                 });
             }
         });
+        it("tokenizes integrate_ode", function() {
+            // only use a few examples
+            const functions = ['integrate_ode_bdf', 'integrate_ode_rk45'];
+            for (let fxn of functions) {
+                const line = fxn;
+                const {
+                    tokens
+                } = grammar.tokenizeLine(line);
+                expect(tokens[0]).toEqual({
+                    value: fxn,
+                    scopes: ['source.stan', 'support.function.integrate_ode.stan']
+                });
+            }
+        });
+        it("tokenizes algegra_solver", function() {
+            const {
+                tokens
+            } = grammar.tokenizeLine("algebra_solver");
+            expect(tokens[0]).toEqual({
+                value: 'algebra_solver',
+                scopes: ['source.stan', 'support.function.algebra_solver.stan']
+            });
+        });
     });
 
     describe("distributions", function() {
@@ -674,15 +703,15 @@ describe("Stan grammar", function() {
                 } = grammar.tokenizeLine(line);
                 expect(tokens[0]).toEqual({
                     value: '~',
-                    scopes: ['source.stan', 'keyword.operator.sampling.stan']
+                    scopes: ['source.stan', 'meta.sampling.stan', 'keyword.operator.sampling.stan']
                 });
                 expect(tokens[1]).toEqual({
                     value: ' ',
-                    scopes: ['source.stan']
+                    scopes: ['source.stan', 'meta.sampling.stan']
                 });
                 expect(tokens[2]).toEqual({
                     value: distr,
-                    scopes: ['source.stan', 'support.function.distribution.stan']
+                    scopes: ['source.stan', 'meta.sampling.stan', 'support.function.distribution.stan']
                 });
             }
         });
@@ -695,15 +724,35 @@ describe("Stan grammar", function() {
             } = grammar.tokenizeLine(line);
             expect(tokens[0]).toEqual({
                 value: '~',
-                scopes: ['source.stan', 'keyword.operator.sampling.stan']
+                scopes: ['source.stan', 'meta.sampling.stan', 'keyword.operator.sampling.stan']
             });
             expect(tokens[1]).toEqual({
                 value: ' ',
-                scopes: ['source.stan']
+                scopes: ['source.stan', 'meta.sampling.stan']
             });
             expect(tokens[2]).toEqual({
                 value: 'foo',
-                scopes: ['source.stan']
+                scopes: ['source.stan', 'meta.sampling.stan', 'variable.other.distribution.stan']
+            });
+        });
+
+        it("is not confused by distributions starting with the name of another distribution", function() {
+            // only use a few examples
+            const line = '~ normala';
+            const {
+                tokens
+            } = grammar.tokenizeLine(line);
+            expect(tokens[0]).toEqual({
+                value: '~',
+                scopes: ['source.stan', 'meta.sampling.stan', 'keyword.operator.sampling.stan']
+            });
+            expect(tokens[1]).toEqual({
+                value: ' ',
+                scopes: ['source.stan', 'meta.sampling.stan']
+            });
+            expect(tokens[2]).toEqual({
+                value: 'normala',
+                scopes: ['source.stan', 'meta.sampling.stan', 'variable.other.distribution.stan']
             });
         });
 
@@ -741,7 +790,7 @@ describe("Stan grammar", function() {
                 });
                 expect(tokens[6]).toEqual({
                     value: 'a',
-                    scopes: ['source.stan']
+                    scopes: ['source.stan', 'variable.other.identifier.stan']
                 });
                 expect(tokens[7]).toEqual({
                     value: ' ',
@@ -757,7 +806,7 @@ describe("Stan grammar", function() {
                 });
                 expect(tokens[10]).toEqual({
                     value: 'b',
-                    scopes: ['source.stan']
+                    scopes: ['source.stan', 'variable.other.identifier.stan']
                 });
                 expect(tokens[11]).toEqual({
                     value: ',',
@@ -769,7 +818,7 @@ describe("Stan grammar", function() {
                 });
                 expect(tokens[13]).toEqual({
                     value: 'c',
-                    scopes: ['source.stan']
+                    scopes: ['source.stan', 'variable.other.identifier.stan']
                 });
                 expect(tokens[14]).toEqual({
                     value: ')',
@@ -788,7 +837,7 @@ describe("Stan grammar", function() {
                 } = grammar.tokenizeLine(line);
                 expect(tokens[0]).toEqual({
                     value: distr,
-                    scopes: ['source.stan']
+                    scopes: ['source.stan', 'variable.other.identifier.stan']
                 });
             }
         });
@@ -840,7 +889,7 @@ describe("Stan grammar", function() {
                 } = grammar.tokenizeLine(w);
                 expect(tokens[0]).toEqual({
                     value: w,
-                    scopes: ['source.stan']
+                    scopes: ['source.stan', 'variable.other.identifier.stan']
                 });
             }
         });
@@ -890,7 +939,7 @@ describe("Stan grammar", function() {
             });
             expect(tokens[3]).toEqual({
                 value: 'a',
-                scopes: ['source.stan']
+                scopes: ['source.stan', 'variable.other.identifier.stan']
             });
             expect(tokens[4]).toEqual({
                 value: ';',
@@ -919,7 +968,7 @@ describe("Stan grammar", function() {
             });
             expect(lines[1][3]).toEqual({
                 value: 'a',
-                scopes: ['source.stan']
+                scopes: ['source.stan', 'variable.other.identifier.stan']
             });
             expect(lines[1][4]).toEqual({
                 value: ';',
@@ -967,13 +1016,12 @@ describe("Stan grammar", function() {
                 value: ';',
                 scopes: ['source.stan', 'punctuation.terminator.statement.stan']
             });
-
             ({
                 tokens
             } = grammar.tokenizeLine('a = 1;'));
             expect(tokens[0]).toEqual({
                 value: 'a',
-                scopes: ['source.stan']
+                scopes: ['source.stan', 'variable.other.identifier.stan']
             });
             expect(tokens[1]).toEqual({
                 value: ' ',
