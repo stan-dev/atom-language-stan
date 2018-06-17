@@ -138,6 +138,7 @@ describe "Stan grammar", ->
           expect(tokens[4]).toEqual value: 'b', scopes: ['source.stan']
 
     describe "assignment", ->
+      operators = ['=', '+=', '-=', '*=', "/=", ".*=", "./="]
 
       it "tokenizes <- as deprecated", ->
         {tokens} = grammar.tokenizeLine('a <- b')
@@ -148,12 +149,13 @@ describe "Stan grammar", ->
         expect(tokens[4]).toEqual value: 'b', scopes: ['source.stan']
 
       it "tokenizes =", ->
-        {tokens} = grammar.tokenizeLine('a = b')
-        expect(tokens[0]).toEqual value: 'a', scopes: ['source.stan']
-        expect(tokens[1]).toEqual value: ' ', scopes: ['source.stan']
-        expect(tokens[2]).toEqual value: '=', scopes: ['source.stan', 'keyword.operator.assignment.stan']
-        expect(tokens[3]).toEqual value: ' ', scopes: ['source.stan']
-        expect(tokens[4]).toEqual value: 'b', scopes: ['source.stan']
+        for operator in operators
+          {tokens} = grammar.tokenizeLine('a ' + operator + ' b')
+          expect(tokens[0]).toEqual value: 'a', scopes: ['source.stan']
+          expect(tokens[1]).toEqual value: ' ', scopes: ['source.stan']
+          expect(tokens[2]).toEqual value: operator, scopes: ['source.stan', 'keyword.operator.assignment.stan']
+          expect(tokens[3]).toEqual value: ' ', scopes: ['source.stan']
+          expect(tokens[4]).toEqual value: 'b', scopes: ['source.stan']
 
     describe "colon", ->
       it "tokenizes it", ->
@@ -222,11 +224,23 @@ describe "Stan grammar", ->
         expect(tokens[0]).toEqual value: kw, scopes: ['source.stan']
 
   describe "special functions", ->
-    keywords = ['print', 'reject']
-    it "tokenizes them", ->
-      for kw in keywords
-        {tokens} = grammar.tokenizeLine(kw + ' (')
-        expect(tokens[0]).toEqual value: kw, scopes: ['source.stan', 'keyword.other.special-functions.stan']
+    it "tokenizes print", ->
+        {tokens} = grammar.tokenizeLine('print(')
+        expect(tokens[0]).toEqual value: 'print', scopes: ['source.stan', 'keyword.other.print.stan']
+
+    it "tokenizes reject", ->
+        {tokens} = grammar.tokenizeLine('reject(')
+        expect(tokens[0]).toEqual value: 'reject', scopes: ['source.stan', 'keyword.other.reject.stan']
+
+  describe "inegrate_ode-like functions", ->
+    it "tokenizes integrate_ode", ->
+        for kw in ['integrate_ode_bdf', 'integrate_ode_rk45']
+            {tokens} = grammar.tokenizeLine(kw + '(')
+            expect(tokens[0]).toEqual value: kw, scopes: ['source.stan', 'support.function.integrate_ode.stan']
+
+    it "tokenizes algebra_solver", ->
+        {tokens} = grammar.tokenizeLine('algebra_solver(')
+        expect(tokens[0]).toEqual value: 'algebra_solver', scopes: ['source.stan', 'support.function.algebra_solver.stan']
 
   describe "deprecated functions", ->
     keywords = ['increment_log_prob', 'integrate_ode', 'get_lp',
