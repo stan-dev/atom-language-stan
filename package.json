@@ -1,6 +1,6 @@
 {
   "name": "language-stan",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Stan Language support in Atom",
   "repository": "https://github.com/jrnold/atom-language-stan",
   "license": "MIT",

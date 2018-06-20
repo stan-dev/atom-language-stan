@@ -490,7 +490,8 @@ describe("Stan grammar", function() {
     });
 
     describe("variable types", function() {
-        const types = ["int", "real", "vector", "simplex", "ordered", "positive_ordered",
+        const types = ["int", "real", "vector", "simplex", "unit_vector",
+            "ordered", "positive_ordered",
             "row_vector", "matrix", "corr_matrix", "cov_matrix",
             "cholesky_factor_cov", "cholesky_factor_corr",
             "void"
