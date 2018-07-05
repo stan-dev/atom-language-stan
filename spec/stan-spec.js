@@ -204,10 +204,13 @@ describe("Stan grammar", function() {
 
         return it("tokenizes reals", function() {
             let tokens;
-            const numbers = ['0.0', '1.0', '3.14', '217.9387',
+            const numbers = [
+                '0.0', '1.0', '3.14', '217.9387',
                 '0.123', '.123', '1.',
                 '12e34', '12E34', '12.e34', '12.E34',
-                '.1e34', '.1E34', '12.0e34', '12.0E34'
+                '.1e34', '.1E34', '12.0e34', '12.0E34',
+                '12e+34', '12E+34', '12.e+34', '12.E+34',
+                '.1e+34', '.1E+34', '12.0e+34', '12.0E+34',
             ];
             for (var num of numbers) {
                 ({
