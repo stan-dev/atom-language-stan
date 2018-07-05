@@ -247,7 +247,6 @@ describe("Stan grammar", function() {
         });
     });
 
-
     describe("operators", function() {
         describe("logical", function() {
             const operators = ["&&", "||", "!"];
@@ -512,7 +511,8 @@ describe("Stan grammar", function() {
 
     describe("control keywords", () => {
         it("tokenizes them", function() {
-            const keywords = ['for', 'in', 'while', 'if', 'else'];
+            const keywords = ['for', 'in', 'while', 'if', 'else',
+                              'break', 'continue'];
             for (let kw of keywords) {
                 const {
                     tokens

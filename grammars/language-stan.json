@@ -26,7 +26,7 @@
       "name": "storage.type.stan"
     },
     {
-      "match": "\\b(for|in|while|if|else)\\b",
+      "match": "\\b(for|in|while|if|else|break|continue)\\b",
       "name": "keyword.control.stan"
     },
     {
