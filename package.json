@@ -10,7 +10,7 @@
   "bugs": {
     "url": "https://github.com/jrnold/atom-language-stan/issues"
   },
-  "devDependencies": {
+  "dependencies": {
     "atom-grammar-test": "^0.6.4"
   }
 }
