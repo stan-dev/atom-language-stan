@@ -8,215 +8,6 @@ patterns: [
   {
     include: '#comments'
   }
-  {
-    include: '#strings'
-  }
-  {
-    include: '#numbers'
-  }
-  {
-    comment: 'block declarations'
-    name: 'meta.block.stan'
-    begin: '''(?x)
-		  \\b(
-        functions|
-        data|
-        transformed\\s+data|
-        parameters|
-        transformed\\s+parameters|
-        model|
-        generated\\s+quantities
-      )
-      \\s*
-      ({)
-      '''
-    beginCaptures:
-      '1':
-        name: 'entity.name.section.stan'
-      '2':
-        name: 'punctuation.section.block.begin.bracket.curly.stan'
-    end: '}'
-    endCaptures:
-      '0':
-        name: 'punctuation.section.block.end.bracket.curly.stan'
-    patterns: [
-      {
-        'include': '$base'
-      }
-    ]
-  }
-  {
-    comment: "Function declaration"
-    name: 'meta.function.stan'
-    begin: '''(?x)
-    \\b(void|int|real|vector|row_vector|matrix)
-    \\s+
-    ([A-Za-z][A-Za-z0-9_]*)
-    \\s*
-    (\\()
-    '''
-    beginCaptures:
-      '1':
-        name: 'storage.type.stan'
-      '2':
-        name: 'entity.name.function.stan'
-      '3':
-        name: 'punctuation.definition.parameters.begin.bracket.round.stan'
-    end: '\\)'
-    endCaptures:
-      '0':
-        name: 'punctuation.definition.parameters.end.bracket.round.stan'
-    patterns: [
-      {
-        include: '#function_parameters'
-      }
-    ]
-  }
-  {
-    comment: 'Variable declaration'
-    name: 'meta.variable.stan'
-    begin: '''(?x)
-      \\b(
-        int|real|vector|simplex|unit_vector|ordered|positive_ordered|
-        row_vector|matrix|corr_matrix|cov_matrix|cholesky_factor_cov|
-        cholesky_factor_corr
-      )\\b
-      '''
-    beginCaptures:
-      '0':
-        name: 'storage.type.variable.stan'
-    # after identifier either ; to end statement, [...] for array dims or
-    # = for assignment
-    end: '([A-Za-z][A-Za-z0-9_]*)(?=\\s*[\\[;=])'
-    endCaptures:
-      '0':
-        name: 'entity.name.variable.stan'
-    patterns: [
-    ]
-  }
-  {
-    comment: 'variable types'
-    match: '\\b(int|real|vector|simplex|unit_vector|ordered|positive_ordered|row_vector|matrix|corr_matrix|cov_matrix|cholesky_factor_cov|cholesky_factor_corr|void)\\b'
-    name: 'storage.type.stan'
-  }
-  {
-    match: '\\b(for|in|while|if|else|break|continue)\\b'
-    name: 'keyword.control.stan'
-  }
-  {
-    match: '\\b(lower|upper)\\s*(=)'
-    captures:
-      '1':
-        name: 'keyword.other.range.stan'
-      '2':
-        name: 'punctuation.operator.equal.stan'
-  }
-  {
-    match: '\\breturn\\b'
-    name: 'keyword.other.return.stan'
-  }
-  {
-    match: '\\b(target\\s*\\+=)'
-    name: 'keyword.other.target.stan'
-  }
-  {
-    comment: 'truncation operator T[]'
-    match: '\\bT(?=\\s*\\[)'
-    name: 'keyword.other.truncation.stan'
-  }
-  {
-    include: '#distributions'
-  }
-  {
-    match: '\\b(print|reject)\\b'
-    name: 'keyword.other.special-functions.stan'
-  }
-  {
-    match: '\\b(integrate_ode_(?:bdf|rk45))\\b'
-    name: 'support.function.integrate_ode.stan'
-  }
-  {
-    match: '\\balgebra_solver\\b'
-    name: 'support.function.algebra_solver.stan'
-  }
-  {
-    include: '#functions'
-  }
-  {
-    include: '#reserved'
-  }
-  {
-    match: '\\b([a-zA-Z0-9_]*__|[0-9_][A-Za-z0-9_]+|_)\\b'
-    name: 'invalid.illegal.variable'
-  }
-  {
-    match: '\\b[A-Za-z][0-9A-Za-z_]*\\b'
-    comment: 'generic variable names'
-    name: 'variable.other.identifier.stan'
-  }
-  {
-    include: '#operators'
-  }
-  {
-    match: ','
-    name: 'meta.delimiter.comma.stan'
-  }
-  {
-    comment: "{...}"
-    begin: '\\{'
-    beginCaptures:
-      '0':
-        'name': 'punctuation.section.block.begin.bracket.curly.stan'
-    end: '\\}'
-    endCaptures:
-      '0':
-        name: 'punctuation.section.block.end.bracket.curly.stan'
-    patterns: [
-      {
-        'include': '$base'
-      }
-    ]
-  }
-  {
-    comment: "[...]"
-    begin: '\\['
-    beginCaptures:
-      '0':
-        'name': 'punctuation.section.brackets.begin.bracket.square.stan'
-    end: '\\]'
-    endCaptures:
-      '0':
-        name: 'punctuation.section.brackets.end.bracket.square.stan'
-    patterns: [
-      {
-        'include': '$base'
-      }
-    ]
-  }
-  {
-    comment: "(...)"
-    begin: '\\('
-    beginCaptures:
-      '0':
-        'name': 'punctuation.section.parens.begin.bracket.round.stan'
-    end: '\\)'
-    endCaptures:
-      '0':
-        name: 'punctuation.section.parens.end.bracket.round.stan'
-    patterns: [
-      {
-        'include': '$base'
-      }
-    ]
-  }
-  {
-    match: '\\;'
-    name: 'punctuation.terminator.statement.stan'
-  }
-  {
-    match: '[|]'
-    name: 'punctuation.sampling.bar.stan'
-  }
 ]
 repository:
   docblock:
@@ -411,6 +202,84 @@ repository:
         name: 'constant.numeric.integer.stan'
       }
     ]
+  comma:
+    patterns: [
+      {
+        match: ','
+        name: 'meta.delimiter.comma.stan'
+      }
+    ]
+  semicolon:
+    patterns: [
+      {
+        match: ';'
+        name: 'punctuation.terminator.statement.stan'
+      }
+    ]
+  'sampling-bar':
+    patterns: [
+      {
+        match: '[|]'
+        name: 'punctuation.sampling.bar.stan'
+      }
+    ]
+  'illegal-identifier':
+    patterns: [
+      {
+        match: '\\b([a-zA-Z0-9_]*__|[0-9_][A-Za-z0-9_]+|_)\\b'
+        name: 'invalid.illegal.variable'
+      }
+    ]
+  identifier:
+    patterns: [
+      {
+        match: '\\b[A-Za-z][0-9A-Za-z_]*\\b'
+        comment: 'generic variable names'
+        name: 'variable.other.identifier.stan'
+      }
+    ]
+  'print-expression':
+    patterns: [
+      {
+        include: '#string'
+      }
+      {
+        include: '#comma'
+      }
+      {
+        include: '#expression'
+      }
+    ]
+  reject:
+    patterns: [
+      {
+        begin: '\\b(reject)\\s*(\\()'
+        beginCaptures:
+          '1':
+            name: 'keyword.other.reject.stan'
+        end: '(\\))'
+        patterns: [
+          {
+            include: '#print-expression'
+          }
+        ]
+      }
+    ]
+  print:
+    patterns: [
+      {
+        begin: '\\b(print)\\s*(\\()'
+        beginCaptures:
+          '1':
+            name: 'keyword.other.print.stan'
+        end: '(\\))'
+        patterns: [
+          {
+            include: '#print-expression'
+          }
+        ]
+      }
+    ]
   functions:
     patterns: [
       {
@@ -459,7 +328,9 @@ repository:
   function_parameters:
     patterns: [
       {
-        match: '\\b(?:(data)\\s+)?(int|real|vector|row_vector|matrix)(\\s*(\\[\\s*(?:,\\s*)\\]))?\\b'
+        match: '''(?x)
+          \\b(?:(data)\\s+)?(int|real|vector|row_vector|matrix)(\\s*(\\[\\s*(?:,\\s*)\\]))?\\b
+        '''
         captures:
           '1':
             name: 'storage.modifier.data.stan'
@@ -480,20 +351,304 @@ repository:
         name: 'meta.delimiter.comma.stan'
       }
     ]
+  'expression-bare':
+    patterns: [
+      {
+        include: '#number'
+      }
+      {
+        include: '#illegal-identifier'
+      }
+      {
+        include: '#identifier'
+      }
+      {
+        include: '#brackets'
+      }
+      {
+        include: '#curly-brackets'
+      }
+      {
+        include: '#parens'
+      }
+      {
+        include: '#operators'
+      }
+    ]
+  'expressions':
+    patterns: [
+      {
+        include: '#expression-bare'
+      }
+      {
+        include: '#comments'
+      }
+    ]
+
+  'statements':
+    patterns: [
+      {
+        include: '#variable-declarations'
+      }
+      {
+        include: '#semicolon'
+      }
+      {
+        include: '#sampling-statement'
+      }
+      {
+        include: '#keyword-control'
+      }
+      {
+        include: '#print'
+      }
+      {
+        include: '#reject'
+      }
+      {
+        include: '#expression'
+      }
+      {
+        include: '#assignment-statement'
+      }
+    ]
+
   angle_brackets:
     begin: '<'
     end: '>'
     name: 'meta.range_constraints.stan'
     patterns: [
       {
-        match: 'lower(?=[=])',
-        name: 'keyword.other.lower.stan'
+        match: '(lower)\\s*(=)',
+        captures:
+          '1':
+            name: 'keyword.other.upper.stan'
+          '2':
+            name: 'meta.delimiter.equals.stan'
       }
       {
-        match: 'upper(?=[=])',
-        name: 'keyword.other.upper.stan'
+        match: '(upper)\\s*(=)',
+        captures:
+          '1':
+            name: 'keyword.other.upper.stan'
+          '2':
+            name: 'meta.delimiter.equals.stan'
       }
       {
         'include': '$base'
+      }
+    ]
+  'block-declarations': {
+    comment: 'block declarations'
+    name: 'meta.block.stan'
+    begin: '''(?x)
+		  \\b(
+        functions|
+        data|
+        transformed\\s+data|
+        parameters|
+        transformed\\s+parameters|
+        model|
+        generated\\s+quantities
+      )
+      \\s*
+      ({)
+      '''
+    beginCaptures:
+      '1':
+        name: 'entity.name.section.stan'
+      '2':
+        name: 'punctuation.section.block.begin.bracket.curly.stan'
+    end: '}'
+    endCaptures:
+      '0':
+        name: 'punctuation.section.block.end.bracket.curly.stan'
+    patterns: [
+      {
+        'include': '$base'
+      }
+    ]
+  }
+  'function-declaration': {
+    comment: "Function declaration"
+    name: 'meta.function.stan'
+    begin: '''(?x)
+    \\b(
+      void|
+      (?:int|real|vector|row_vector|matrix)(?:\\[\\s*(,\\s*)*\\])?
+    )
+    \\s+
+    ([A-Za-z][A-Za-z0-9_]*)
+    \\s*
+    (\\()
+    '''
+    beginCaptures:
+      '1':
+        name: 'storage.type.stan'
+      '2':
+        name: 'entity.name.function.stan'
+      '3':
+        name: 'punctuation.definition.parameters.begin.bracket.round.stan'
+    end: '\\)'
+    endCaptures:
+      '0':
+        name: 'punctuation.definition.parameters.end.bracket.round.stan'
+    patterns: [
+      {
+        include: '#function_parameters'
+      }
+    ]
+  }
+  'variable-declarations':
+    patterns: [
+      {
+        comment: 'Variable declaration'
+        name: 'meta.variable.stan'
+        begin: '''(?x)
+          \\b(
+            int|real|vector|simplex|unit_vector|ordered|positive_ordered|
+            row_vector|matrix|corr_matrix|cov_matrix|cholesky_factor_cov|
+            cholesky_factor_corr
+          )\\b
+          '''
+        beginCaptures:
+          '0':
+            name: 'storage.type.variable.stan'
+        # after identifier either ; to end statement, [...] for array dims or
+        # = for assignment
+        end: '([A-Za-z][A-Za-z0-9_]*)(?=\\s*[\\[;=])'
+        endCaptures:
+          '0':
+            name: 'entity.name.variable.stan'
+        patterns: [
+          {
+            'include': '#angle_brackets'
+          }
+          {
+            'include': '$base'
+          }
+        ]
+      }
+    ]
+  'sampling-statement'
+    patterns: [
+      {
+        begin: '(~)'
+        beginCaptures:
+          '0':
+            name: 'keyword.operator.sampling.stan'
+        end: ';'
+        endCaptures:
+          '0':
+            name: 'punctuation.terminator.statement.stan'
+        patterns: [
+          {
+            include: '#distributions'
+          }
+          {
+            include: '#truncation'
+          }
+        ]
+      }
+    ]
+  'keywords-control':
+    patterns: [
+      {
+        match: '\\b(for|in|while|if|else|break|continue)\\b'
+        name: 'keyword.control.stan'
+      }
+    ]
+  'keyword-return':
+    patterns: [
+      {
+        match: '\\breturn\\b'
+        name: 'keyword.other.return.stan'
+      }
+    ]
+  'keyword-target':
+    patterns: [
+      {
+        match: '\\b(target\\s*\\+=)'
+        name: 'keyword.other.target.stan'
+      }
+    ]
+  truncation:
+    patterns: [
+      {
+        comment: 'truncation operator T[]'
+        match: '\\bT(?=\\s*\\[)'
+        name: 'keyword.other.truncation.stan'
+      }
+    ]
+  'curly-brackets':
+    patterns: [
+      {
+        comment: "{...}"
+        begin: '\\{'
+        beginCaptures:
+          '0':
+            'name': 'punctuation.section.block.begin.bracket.curly.stan'
+        end: '\\}'
+        endCaptures:
+          '0':
+            name: 'punctuation.section.block.end.bracket.curly.stan'
+        patterns: [
+          {
+            include: '#comma'
+          }
+          {
+            include: '#statement'
+          }
+          {
+            include: '#expression'
+          }
+        ]
+      }
+    ]
+  brackets:
+    patterns: [
+      {
+        comment: "[...]"
+        begin: '\\['
+        beginCaptures:
+          '0':
+            'name': 'punctuation.section.brackets.begin.bracket.square.stan'
+        end: '\\]'
+        endCaptures:
+          '0':
+            name: 'punctuation.section.brackets.end.bracket.square.stan'
+        patterns: [
+          {
+            include: '#expression'
+          }
+          {
+            include: '#comma'
+          }
+        ]
+      }
+    ]
+  parens: [
+    patterns: [
+      {
+        comment: "(...)"
+        begin: '\\('
+        beginCaptures:
+          '0':
+            'name': 'punctuation.section.parens.begin.bracket.round.stan'
+        end: '\\)'
+        endCaptures:
+          '0':
+            name: 'punctuation.section.parens.end.bracket.round.stan'
+        patterns: [
+          {
+            include: '#expression'
+          }
+          {
+            include: '#comma'
+          }
+          {
+            include: '#sampling-bar'
+          }
+        ]
       }
     ]
