@@ -73,6 +73,28 @@ patterns: [
     ]
   }
   {
+    comment: 'Variable declaration'
+    name: 'meta.variable.stan'
+    begin: '''(?x)
+      \\b(
+        int|real|vector|simplex|unit_vector|ordered|positive_ordered|
+        row_vector|matrix|corr_matrix|cov_matrix|cholesky_factor_cov|
+        cholesky_factor_corr
+      )\\b
+      '''
+    beginCaptures:
+      '0':
+        name: 'storage.type.variable.stan'
+    # after identifier either ; to end statement, [...] for array dims or
+    # = for assignment
+    end: '([A-Za-z][A-Za-z0-9_]*)(?=\\s*[\\[;=])'
+    endCaptures:
+      '0':
+        name: 'entity.name.variable.stan'
+    patterns: [
+    ]
+  }
+  {
     comment: 'variable types'
     match: '\\b(int|real|vector|simplex|unit_vector|ordered|positive_ordered|row_vector|matrix|corr_matrix|cov_matrix|cholesky_factor_cov|cholesky_factor_corr|void)\\b'
     name: 'storage.type.stan'
@@ -94,12 +116,8 @@ patterns: [
     name: 'keyword.other.return.stan'
   }
   {
-    match: '\\b(target)\\s*([+][=])'
-    captures:
-      '1':
-        name: 'keyword.other.target.stan'
-      '2':
-        name: 'keyword.operator.accumulator.stan'
+    match: '\\b(target\\s*\\+=)'
+    name: 'keyword.other.target.stan'
   }
   {
     comment: 'truncation operator T[]'
@@ -142,21 +160,6 @@ patterns: [
   {
     match: ','
     name: 'meta.delimiter.comma.stan'
-  }
-  {
-    begin: '{'
-    beginCaptures:
-      '0':
-        name: 'punctuation.section.block.begin.bracket.curly.stan'
-    end: '}'
-    endCaptures:
-      '0':
-        name: 'punctuation.section.block.end.bracket.curly.stan'
-    patterns: [
-      {
-        include: '$base'
-      }
-    ]
   }
   {
     comment: "{...}"
@@ -475,5 +478,22 @@ repository:
       {
         match: ','
         name: 'meta.delimiter.comma.stan'
+      }
+    ]
+  angle_brackets:
+    begin: '<'
+    end: '>'
+    name: 'meta.range_constraints.stan'
+    patterns: [
+      {
+        match: 'lower(?=[=])',
+        name: 'keyword.other.lower.stan'
+      }
+      {
+        match: 'upper(?=[=])',
+        name: 'keyword.other.upper.stan'
+      }
+      {
+        'include': '$base'
       }
     ]

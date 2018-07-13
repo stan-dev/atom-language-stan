@@ -453,33 +453,72 @@ describe("Stan grammar", function() {
     });
   });
 
-  describe("variable types", function() {
-    const types = [
-      "int",
-      "real",
-      "vector",
-      "simplex",
-      "unit_vector",
-      "ordered",
-      "positive_ordered",
-      "row_vector",
-      "matrix",
-      "corr_matrix",
-      "cov_matrix",
-      "cholesky_factor_cov",
-      "cholesky_factor_corr",
-      "void"
-    ];
-    it("tokenizes them", () => {
-      for (let typ of types) {
-        const line = typ;
-        const {tokens} = grammar.tokenizeLine(line);
-        expect(tokens[0]).toEqual({
-          value: typ,
-          scopes: ['source.stan', 'storage.type.stan']
+  describe("variable declarations", () => {
+    it("tokenizes real variable declaration", () => {
+      const line = "real a;";
+      const {tokens} = grammar.tokenizeLine(line);
+      const expected = [
+        ['real', ['source.stan', 'meta.variable.stan', 'storage.type.variable.stan']],
+        [' ', ['source.stan', 'meta.variable.stan']],
+        ['a', ['source.stan', 'meta.variable.stan', 'entity.name.variable.stan']],
+        [';', ['source.stan', 'punctuation.terminator.statement.stan']]
+      ];
+      for (let i = 0; i < expected.length; i++) {
+        expect(tokens[i]).toEqual({
+          'value': expected[i][0],
+          'scopes': expected[i][1]
         });
       }
     });
+  });
+
+  describe("variable declarations with lower and upper bounds", () => {
+    it("tokenizes real variable declaration", () => {
+      const line = "real<lower=0., upper=0.> a;";
+      const {tokens} = grammar.tokenizeLine(line);
+      const expected = [
+        ['real', ['source.stan', 'meta.variable.stan', 'storage.type.variable.stan']],
+        ['<', ['source.stan', 'meta.variable.stan']],
+        ['lower', ['source.stan', 'meta.variable.stan']],
+        ['=', ['source.stan', 'meta.variable.stan']],
+        ['0.', ['source.stan', 'meta.variable.stan']],
+        [',', ['source.stan', 'meta.variable.stan']],
+        ['upper', ['source.stan', 'meta.variable.stan']],
+        ['=', ['source.stan', 'meta.variable.stan']],
+        ['0.', ['source.stan', 'meta.variable.stan']],
+        ['>', ['source.stan', 'meta.variable.stan']],
+        ['a', ['source.stan', 'meta.variable.stan', 'entity.name.variable.stan']],
+        [' ', ['source.stan', 'meta.variable.stan']],
+        [';', ['source.stan', 'punctuation.terminator.statement.stan']]
+      ];
+      for (let i = 0; i < expected.length; i++) {
+        expect(tokens[i]).toEqual({
+          'value': expected[i][0],
+          'scopes': expected[i][1]
+        });
+      }
+    });
+
+    describe("variable declarations with array dimensions", () => {
+      it("tokenizes real variable declaration", () => {
+        const line = "real a[1];";
+        const {tokens} = grammar.tokenizeLine(line);
+        const expected = [
+          ['real', ['source.stan', 'meta.variable.stan', 'storage.type.variable.stan']],
+          [' ', ['source.stan', 'meta.variable.stan']],
+          ['a', ['source.stan', 'meta.variable.stan', 'entity.name.variable.stan']],
+          ['[', ['source.stan', 'meta.variable.stan']],
+          ['1', ['source.stan', 'meta.variable.stan']],
+          [']', ['source.stan', 'meta.variable.stan']],
+          [';', ['source.stan', 'punctuation.terminator.statement.stan']]
+        ];
+        for (let i = 0; i < expected.length; i++) {
+          expect(tokens[i]).toEqual({
+            'value': expected[i][0],
+            'scopes': expected[i][1]
+          });
+        }
+      });
   });
 
   describe("control keywords", () => {
@@ -851,12 +890,15 @@ describe("Stan grammar", function() {
       });
       expect(tokens[1]).toEqual({
         value: 'real',
-        scopes: ['source.stan', 'storage.type.stan']
+        scopes: ['source.stan', 'meta.variable.stan', 'storage.type.variable.stan']
       });
-      expect(tokens[2]).toEqual({value: ' ', scopes: ['source.stan']});
+      expect(tokens[2]).toEqual({
+        value: ' ',
+        scopes: ['source.stan', 'meta.variable.stan']
+      });
       expect(tokens[3]).toEqual({
         value: 'a',
-        scopes: ['source.stan', 'variable.other.identifier.stan']
+        scopes: ['source.stan', 'meta.variable.stan', 'entity.name.variable.stan']
       });
       expect(tokens[4]).toEqual({
         value: ';',
@@ -877,12 +919,12 @@ describe("Stan grammar", function() {
       });
       expect(lines[1][1]).toEqual({
         value: 'real',
-        scopes: ['source.stan', 'storage.type.stan']
+        scopes: ['source.stan', 'meta.variable.stan', 'storage.type.variable.stan']
       });
-      expect(lines[1][2]).toEqual({value: ' ', scopes: ['source.stan']});
+      expect(lines[1][2]).toEqual({value: ' ', scopes: ['source.stan', 'meta.variable.stan']});
       expect(lines[1][3]).toEqual({
         value: 'a',
-        scopes: ['source.stan', 'variable.other.identifier.stan']
+        scopes: ['source.stan', 'meta.variable.stan', 'entity.name.variable.stan']
       });
       expect(lines[1][4]).toEqual({
         value: ';',
