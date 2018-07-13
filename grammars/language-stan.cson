@@ -6,7 +6,7 @@ fileTypes: [
 ]
 patterns: [
   {
-    include: '#comments'
+    include: '#expression'
   }
 ]
 repository:
@@ -136,52 +136,7 @@ repository:
         ]
       }
     ]
-  operators:
-    patterns: [
-      {
-        match: '<-'
-        name: 'invalid.deprecated.assignment.stan'
-      }
-      {
-        match: '[|]{2}|&&'
-        name: 'keyword.operator.logical.stan'
-      }
-      {
-        match: '==|!=|<=?|>=?'
-        name: 'keyword.operator.comparison.stan'
-      }
-      {
-        match: '!'
-        name: 'keyword.operator.logical.stan'
-      }
-      {
-        match: '[+-]=|\\.?[*/]=|='
-        name: 'keyword.operator.assignment.stan'
-      }
-      {
-        match: '\\+|-|\\.?\\*|\\.?/|%|\\\\|\\^|\''
-        name: 'keyword.operator.arithmetic.stan'
-      }
-      {
-        begin: '\\?'
-        beginCaptures:
-          '0':
-            name: 'keyword.operator.ternary.stan'
-        end: ':'
-        endCaptures:
-          '0':
-            name: 'keyword.operator.ternary.stan'
-        patterns: [
-          {
-            include: '$base'
-          }
-        ]
-      }
-      {
-        match: ':'
-        name: 'keyword.operator.colon.stan'
-      }
-    ]
+
   numbers:
     patterns: [
       {
@@ -202,6 +157,67 @@ repository:
         name: 'constant.numeric.integer.stan'
       }
     ]
+
+  'illegal-identifier':
+    comment: "This pattern needs to go before \#identifier to work"
+    patterns: [
+      {
+        match: '\\b([a-zA-Z0-9_]*__|[0-9_][A-Za-z0-9_]+|_)\\b'
+        name: 'invalid.illegal.variable.stan'
+      }
+    ]
+
+  identifier:
+    patterns: [
+      {
+        match: '\\b[A-Za-z][0-9A-Za-z_]*\\b'
+        comment: 'generic variable names'
+        name: 'variable.other.identifier.stan'
+      }
+    ]
+  operators:
+    patterns: [
+      {
+        match: '[|][|]|&&'
+        name: 'keyword.operator.logical.stan'
+      }
+      {
+        match: '==|!=|<=?|>=?'
+        name: 'keyword.operator.logical.stan'
+      }
+      {
+        match: '!'
+        name: 'keyword.operator.logical.stan'
+      }
+      {
+        match: '\\+|-|\\.?\\*|\\.?/|%|\\\\|\\^|\''
+        name: 'keyword.operator.arithmetic.stan'
+      }
+      {
+        begin: '\\?'
+        beginCaptures:
+          '0':
+            name: 'keyword.operator.ternary.stan'
+        # safety (end this at the end of a statement/expression)
+        end: '(:)|(?=(?:[,;)\\]}]|\\b(?:if|else|for|while)\\b))'
+        endCaptures:
+          '1':
+            name: 'keyword.operator.ternary.stan'
+        patterns: [
+          {
+            include: '#expression'
+          }
+        ]
+      }
+
+    ]
+  colon:
+    patterns: [
+      {
+        match: ':'
+        name: 'keyword.operator.colon.stan'
+      }
+    ]
   comma:
     patterns: [
       {
@@ -209,6 +225,111 @@ repository:
         name: 'meta.delimiter.comma.stan'
       }
     ]
+  'curly-brackets':
+    patterns: [
+      {
+        comment: "{...}"
+        begin: '\\{'
+        beginCaptures:
+          '0':
+            'name': 'punctuation.section.array.begin.bracket.curly.stan'
+        end: '\\}'
+        endCaptures:
+          '0':
+            name: 'punctuation.section.array.end.bracket.curly.stan'
+        patterns: [
+          {
+            include: '#comma'
+          }
+          {
+            include: '#expression'
+          }
+        ]
+      }
+    ]
+  brackets:
+    patterns: [
+      {
+        comment: "[...]"
+        begin: '\\['
+        beginCaptures:
+          '0':
+            'name': 'punctuation.section.brackets.begin.bracket.square.stan'
+        end: '\\]'
+        endCaptures:
+          '0':
+            name: 'punctuation.section.brackets.end.bracket.square.stan'
+        patterns: [
+          {
+            include: '#comma'
+          }
+          {
+            include: '#colon'
+          }
+          {
+            include: '#expression'
+          }
+        ]
+      }
+    ]
+  parens:
+    patterns: [
+      {
+        comment: "(...)"
+        begin: '\\('
+        beginCaptures:
+          '0':
+            'name': 'punctuation.section.parens.begin.bracket.round.stan'
+        end: '\\)'
+        endCaptures:
+          '0':
+            name: 'punctuation.section.parens.end.bracket.round.stan'
+        patterns: [
+            {
+              include: '#expression'
+            }
+          ]
+      }
+    ]
+
+  'expression-bare':
+    patterns: [
+      {
+        include: '#numbers'
+      }
+      {
+        comment: 'This rule needs to preceed identifier to work'
+        include: '#illegal-identifier'
+      }
+      {
+        include: '#identifier'
+      }
+      {
+        include: '#operators'
+      }
+      {
+        include: '#brackets'
+      }
+      {
+        include: '#curly-brackets'
+      }
+      {
+        include: '#parens'
+      }
+
+    ]
+  expression:
+    patterns: [
+      {
+        # comments must come before expression because of / operator
+        include: '#comments'
+      }
+      {
+        include: '#expression-bare'
+      }
+    ]
+
+
   semicolon:
     patterns: [
       {
@@ -223,21 +344,8 @@ repository:
         name: 'punctuation.sampling.bar.stan'
       }
     ]
-  'illegal-identifier':
-    patterns: [
-      {
-        match: '\\b([a-zA-Z0-9_]*__|[0-9_][A-Za-z0-9_]+|_)\\b'
-        name: 'invalid.illegal.variable'
-      }
-    ]
-  identifier:
-    patterns: [
-      {
-        match: '\\b[A-Za-z][0-9A-Za-z_]*\\b'
-        comment: 'generic variable names'
-        name: 'variable.other.identifier.stan'
-      }
-    ]
+
+
   'print-expression':
     patterns: [
       {
@@ -351,39 +459,8 @@ repository:
         name: 'meta.delimiter.comma.stan'
       }
     ]
-  'expression-bare':
-    patterns: [
-      {
-        include: '#number'
-      }
-      {
-        include: '#illegal-identifier'
-      }
-      {
-        include: '#identifier'
-      }
-      {
-        include: '#brackets'
-      }
-      {
-        include: '#curly-brackets'
-      }
-      {
-        include: '#parens'
-      }
-      {
-        include: '#operators'
-      }
-    ]
-  'expressions':
-    patterns: [
-      {
-        include: '#expression-bare'
-      }
-      {
-        include: '#comments'
-      }
-    ]
+
+
 
   'statements':
     patterns: [
@@ -530,7 +607,7 @@ repository:
         ]
       }
     ]
-  'sampling-statement'
+  'sampling-statement':
     patterns: [
       {
         begin: '(~)'
@@ -574,81 +651,9 @@ repository:
     ]
   truncation:
     patterns: [
-      {
-        comment: 'truncation operator T[]'
-        match: '\\bT(?=\\s*\\[)'
-        name: 'keyword.other.truncation.stan'
-      }
-    ]
-  'curly-brackets':
-    patterns: [
-      {
-        comment: "{...}"
-        begin: '\\{'
-        beginCaptures:
-          '0':
-            'name': 'punctuation.section.block.begin.bracket.curly.stan'
-        end: '\\}'
-        endCaptures:
-          '0':
-            name: 'punctuation.section.block.end.bracket.curly.stan'
-        patterns: [
-          {
-            include: '#comma'
-          }
-          {
-            include: '#statement'
-          }
-          {
-            include: '#expression'
-          }
-        ]
-      }
-    ]
-  brackets:
-    patterns: [
-      {
-        comment: "[...]"
-        begin: '\\['
-        beginCaptures:
-          '0':
-            'name': 'punctuation.section.brackets.begin.bracket.square.stan'
-        end: '\\]'
-        endCaptures:
-          '0':
-            name: 'punctuation.section.brackets.end.bracket.square.stan'
-        patterns: [
-          {
-            include: '#expression'
-          }
-          {
-            include: '#comma'
-          }
-        ]
-      }
-    ]
-  parens: [
-    patterns: [
-      {
-        comment: "(...)"
-        begin: '\\('
-        beginCaptures:
-          '0':
-            'name': 'punctuation.section.parens.begin.bracket.round.stan'
-        end: '\\)'
-        endCaptures:
-          '0':
-            name: 'punctuation.section.parens.end.bracket.round.stan'
-        patterns: [
-          {
-            include: '#expression'
-          }
-          {
-            include: '#comma'
-          }
-          {
-            include: '#sampling-bar'
-          }
-        ]
-      }
-    ]
+        {
+          comment: 'truncation operator T[]'
+          match: '\\bT(?=\\s*\\[)'
+          name: 'keyword.other.truncation.stan'
+        }
+      ]

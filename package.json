@@ -11,6 +11,7 @@
     "url": "https://github.com/jrnold/atom-language-stan/issues"
   },
   "devDependencies": {
+    "atom-grammar-test": "^0.6.4",
     "coffeelint": "^2.1.0",
     "standard": "^11.0.1"
   },
