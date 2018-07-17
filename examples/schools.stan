@@ -1,3 +1,9 @@
+functions {
+  int[,] foo(data real a, int[] b) {
+    int a;
+    real b;
+  }
+}
 data {
   int<lower=0> N;
   vector[N] y;
@@ -10,7 +16,7 @@ parameters {
   real xi;
 }
 transformed parameters {
-  real<lower=0> sigma_theta;
+  real<lower=0> sigma_theta = 1 + 1 * foo;
   vector[N] theta;
   theta = mu_theta + xi * eta;
   sigma_theta = fabs(xi) / sigma_eta;
