@@ -698,7 +698,7 @@ describe("Stan grammar", function() {
     describe("distributions", function() {
         it("tokenizes them following a ~", function() {
             // only use a few examples
-            const distributions = ['normal', 'beta', 'cauchy'];
+            const distributions = ['normal', 'bernoulli', 'cauchy'];
             const result = [];
             for (let distr of distributions) {
                 const line = `~ ${distr}`;
@@ -833,7 +833,7 @@ describe("Stan grammar", function() {
 
         it("does not tokenize them not following a ~", function() {
             // only use a few examples
-            const distributions = ['normal', 'beta', 'cauchy'];
+            const distributions = ['normal', 'binomial', 'cauchy'];
             for (let distr of distributions) {
                 const line = distr;
                 const {
@@ -849,22 +849,8 @@ describe("Stan grammar", function() {
 
 
     describe("reserved", function() {
-        it("tokenizes C++ reserved words", function() {
-            const keywords = ['alignas', 'and', 'xor', 'xor_eq'];
-            for (let kw of keywords) {
-                const line = kw;
-                const {
-                    tokens
-                } = grammar.tokenizeLine(line);
-                expect(tokens[0]).toEqual({
-                    value: kw,
-                    scopes: ['source.stan', 'invalid.illegal.reserved.stan']
-                });
-            }
-        });
-
         return it("tokenizes Stan reserved words", function() {
-            const keywords = ['true', 'STAN_MAJOR', 'var', 'fvar'];
+            const keywords = ['true', 'var'];
             for (let kw of keywords) {
                 const line = kw;
                 const {
