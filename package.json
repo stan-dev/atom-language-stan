@@ -2,12 +2,12 @@
   "name": "language-stan",
   "version": "1.3.0",
   "description": "Stan Language support in Atom",
-  "repository": "https://github.com/jrnold/atom-language-stan",
+  "repository": "https://github.com/stan-dev/atom-language-stan",
   "license": "MIT",
   "engines": {
     "atom": ">=1.0.0 <2.0.0"
   },
   "bugs": {
-    "url": "https://github.com/jrnold/atom-language-stan/issues"
+    "url": "https://github.com/stan-dev/atom-language-stan/issues"
   }
 }
