@@ -1,5 +1,5 @@
 [![APM license](https://img.shields.io/apm/l/language-stan.svg)](https://atom.io/packages/language-stan)
-[![CI](https://github.com/stan-dev/atom-language-stan/actions/workflows/main.yml/badge.svg)](https://github.com/WardBrian/atom-language-stan/actions/workflows/main.yml)
+[![CI](https://github.com/stan-dev/atom-language-stan/actions/workflows/main.yml/badge.svg)](https://github.com/stan-dev/atom-language-stan/actions/workflows/main.yml)
 
 # Stan language support in Atom
 
