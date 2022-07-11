@@ -26,13 +26,13 @@ def patterns(filename):
     distributions = [
         v['sampling'] for k, v in data['functions'].items() if v['sampling']
     ]
-    print("functions: \n" + r"'match': '\\b" + kw2re(functions) + r"\\b'")
+    print("functions: \n" + r'"match": "\\b' + kw2re(functions) + r'\\b",')
     print()
-    print("distributions: \n" + r"'match': '\\b(~)\\s*" + kw2re(distributions)
-          + r"\\b'")
+    print("distributions: \n" + r'"match": "(~)(\\s*)' + kw2re(distributions)
+          + r'\\b",')
     print()
-    print("deprecated_functions: \n" + r"'match': '\\b" +
-          kw2re(deprecated_functions) + r"\\b'")
+    print("deprecated_functions: \n" + r'"match": "\\b([A-Za-z0-9][A-Za-z0-9_]*_log|' +
+          kw2re(deprecated_functions)[1:] + r'\\b",')
     print()
 
 

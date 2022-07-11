@@ -1,3 +1,4 @@
 [submodule "stan-language-definitions"]
 	path = stan-language-definitions
-	url = https://github.com/jrnold/stan-language-definitions.git
+	url = https://github.com/WardBrian/stan-language-definitions.git
+	branch = 2-30
