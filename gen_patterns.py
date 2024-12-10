@@ -26,7 +26,7 @@ def patterns(filename):
     distributions = [
         v['sampling'] for k, v in data['functions'].items() if v['sampling']
     ]
-    print("functions: \n" + r'"match": "\\b' + kw2re(functions) + r'\\b",')
+    print("functions: \n" + r'"match": "\\b' + kw2re(functions) + r'\\b\\s*\\(",')
     print()
     print("distributions: \n" + r'"match": "(~)(\\s*)' + kw2re(distributions)
           + r'\\b",')
